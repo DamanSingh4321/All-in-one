@@ -1,11 +1,16 @@
 package com.example.dell.ujstore;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +32,8 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public CardView mCardView;
         public TextView mTextView;
+        private Button apply;
+        private Button reject;
         LinearLayout llExpandArea;
 
         public MyViewHolder(View v) {
@@ -34,7 +41,10 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
 
             mCardView = (CardView) v.findViewById(R.id.card_view);
             mTextView = (TextView) v.findViewById(R.id.tv_text);
+            apply = (Button) v.findViewById(R.id.apply);
+            reject = (Button) v.findViewById(R.id.reject);
             llExpandArea = (LinearLayout) itemView.findViewById(R.id.llExpandArea);
+
         }
     }
 
@@ -46,19 +56,15 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
 
     // Create new views (invoked by the layout manager)
     @Override
-    public OneAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
-        // create a new view
+    public OneAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cards_layout, parent, false);
-        // set the view's size, margins, paddings and layout parameters
         MyViewHolder holder = new MyViewHolder(v);
 
-        // Sets the click adapter for the entire cell
-        // to the one in this class.
         holder.itemView.setOnClickListener(OneAdapter.this);
         holder.itemView.setTag(holder);
-
+        holder.apply.setOnClickListener(this);
+        holder.reject.setOnClickListener(this);
         return holder;
     }
 
@@ -76,15 +82,26 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
         else{
             holder.mTextView.setText(mDataset.get(position));
             holder.llExpandArea.setVisibility(View.GONE);
-            Toast.makeText(mContext, "Clicked again", Toast.LENGTH_SHORT).show();
             a=0;
         }
+        holder.apply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptDialog();
+            }
+        });
+        holder.reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rejectDialog();
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
         MyViewHolder holder = (MyViewHolder) view.getTag();
-        String theString = mDataset.get(holder.getLayoutPosition());
+//        String theString = mDataset.get(holder.getAdapterPosition());
 
         // Check for an expanded view, collapse if you find one
         if (expandedPosition >= 0) {
@@ -92,8 +109,9 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
             notifyItemChanged(prev);
         }
         // Set the current position to "expanded"
-        expandedPosition = holder.getLayoutPosition();
+        expandedPosition = holder.getAdapterPosition();
         notifyItemChanged(expandedPosition);
+
 
         //Toast.makeText(mContext, "Clicked: "+theString, Toast.LENGTH_SHORT).show();
     }
@@ -101,5 +119,61 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    private void acceptDialog(){
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View subView = inflater.inflate(R.layout.dialog_accept, null);
+        final EditText subEditText = (EditText)subView.findViewById(R.id.dialogEditText);
+        final ImageView subImageView = (ImageView)subView.findViewById(R.id.image);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("AlertDialog");
+        builder.setMessage("AlertDialog Message");
+        builder.setView(subView);
+        AlertDialog alertDialog = builder.create();
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String s = subEditText.getText().toString();
+                Toast.makeText(mContext, s,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(mContext, "Cancel", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.show();
+    }
+    private void rejectDialog(){
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View subView = inflater.inflate(R.layout.dialog_reject, null);
+        final EditText subEditText = (EditText)subView.findViewById(R.id.dialogEditText);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("AlertDialog");
+        builder.setMessage("AlertDialog Message");
+        builder.setView(subView);
+        AlertDialog alertDialog = builder.create();
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String s = subEditText.getText().toString();
+                Toast.makeText(mContext, s,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(mContext, "Cancel", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.show();
     }
 }
