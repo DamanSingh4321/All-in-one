@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="Login"
+            android:label="UncleJoy Store Partner"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,12 +22,26 @@
         </activity>
         <activity
             android:name=".SwipeTabActivity"
-            android:label="UncleJoy Store Partner">
-        </activity>
+            android:label="UncleJoy Store Partner" />
         <activity
             android:name=".SignUp_Activity"
             android:label="SignUp"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".privacy_activity"
+            android:parentActivityName=".SwipeTabActivity" />
+        <activity
+            android:name=".term_activity"
+            android:parentActivityName=".SwipeTabActivity" />
+        <activity
+            android:name=".setting_activity"
+            android:parentActivityName=".SwipeTabActivity" />
+        <activity android:name=".profile_activity"
+            android:parentActivityName=".SwipeTabActivity" />
+        <activity android:name=".sharable_activity"
+            android:parentActivityName=".SwipeTabActivity"/>
+        <activity android:name=".howworks_activity"
+            android:parentActivityName=".SwipeTabActivity">
         </activity>
     </application>
 

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-private static final String LOGIN_URL = "https://ujapi.herokuapp.com/api/v1/login";
+private static final String LOGIN_URL = "https://ujapi.herokuapp.com/api/v1/s/login";
 private EditText editTextEmail;
 private EditText editTextPassword;
 private TextView editTextSignup;

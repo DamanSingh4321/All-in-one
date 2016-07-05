@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_logout"
+            android:id="@+id/store_profile"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Logout" />
+            android:title="Store Profile" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/store_sharable_profile"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Store Sharable profile" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/logout"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Logout" />
+    </group>
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/how_it_works"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="How it works" />
+        <item
+            android:id="@+id/privacy_policy"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Privacy Policy" />
+        <item
+            android:id="@+id/term_condition"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Terms and Conditions" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Settings" />
+
     </group>
 
 </menu>

@@ -99,7 +99,7 @@ public class SwipeTabActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_logout) {
+        if (id == R.id.logout) {
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
             SharedPreferences.Editor editor = pref.edit();
             editor.clear();
@@ -108,13 +108,28 @@ public class SwipeTabActivity extends AppCompatActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+        } else if (id == R.id.store_profile) {
+            Intent intent = new Intent(this,profile_activity.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.store_sharable_profile) {
+            Intent intent = new Intent(this,sharable_activity.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.how_it_works) {
+            Intent intent = new Intent(this,howworks_activity.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.privacy_policy) {
+            Intent intent = new Intent(this,privacy_activity.class);
+            startActivity(intent);
 
+        } else if (id == R.id.term_condition) {
+            Intent intent = new Intent(this,term_activity.class);
+            startActivity(intent);
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(this,setting_activity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
