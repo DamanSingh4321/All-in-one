@@ -43,6 +43,7 @@ import java.util.Random;
 public class OneFragment extends Fragment {
     private ArrayList<String> myDataset;
     private ArrayList<String> StoreType;
+    private ArrayList<String> imageUrl;
     private OneAdapter adapter;
     SwipeRefreshLayout swipeRefreshLayout;
     private String URL = "https://ujapi.herokuapp.com/api/v1/s/bookings/openall";
@@ -67,7 +68,7 @@ public class OneFragment extends Fragment {
 
         final RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         rv.setHasFixedSize(true);
-        adapter = new OneAdapter(getContext(), myDataset, StoreType);
+        adapter = new OneAdapter(getContext(), myDataset, StoreType, imageUrl);
         rv.setAdapter(adapter);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -82,9 +83,10 @@ public class OneFragment extends Fragment {
             public void onRefresh() {
                 myDataset.clear();
                 StoreType.clear();
+                imageUrl.clear();
                 swipeRefreshLayout.setRefreshing(true);
                 data();
-                adapter = new OneAdapter(getContext(), myDataset, StoreType);
+                adapter = new OneAdapter(getContext(), myDataset, StoreType, imageUrl);
                 rv.setAdapter(adapter);
                 ( new Handler()).postDelayed(new Runnable() {
                     @Override
@@ -102,6 +104,7 @@ public class OneFragment extends Fragment {
         final String authtoken = pref.getString("token", null);
         myDataset = new ArrayList<String>();
         StoreType = new ArrayList<String>();
+        imageUrl = new ArrayList<String>();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 URL,
                 new Response.Listener<JSONArray>() {
@@ -116,6 +119,12 @@ public class OneFragment extends Fragment {
                                 String storeid = object.getString("store_category");
                                 JSONObject storeobject = new JSONObject(storeid);
                                 StoreType.add(storeobject.getString("category"));
+                                String a1 = object.getString("attachment");
+                                JSONObject a1obj = new JSONObject(a1);
+                                String a2 = a1obj.getString("attachment");
+                                JSONObject a3 = new JSONObject(a2);
+                                imageUrl.add(a3.getString("url"));
+
                             }
                             adapter.notifyDataSetChanged();
 

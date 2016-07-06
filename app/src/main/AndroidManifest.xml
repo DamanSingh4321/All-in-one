@@ -3,6 +3,7 @@
     package="com.example.dell.ujstore">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -36,12 +37,17 @@
         <activity
             android:name=".setting_activity"
             android:parentActivityName=".SwipeTabActivity" />
-        <activity android:name=".profile_activity"
+        <activity
+            android:name=".profile_activity"
             android:parentActivityName=".SwipeTabActivity" />
-        <activity android:name=".sharable_activity"
-            android:parentActivityName=".SwipeTabActivity"/>
-        <activity android:name=".howworks_activity"
+        <activity
+            android:name=".sharable_activity"
+            android:parentActivityName=".SwipeTabActivity" />
+        <activity
+            android:name=".howworks_activity"
             android:parentActivityName=".SwipeTabActivity">
+        </activity>
+        <activity android:name=".ImageView_Activity">
         </activity>
     </application>
 

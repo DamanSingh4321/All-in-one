@@ -3,6 +3,7 @@ package com.example.dell.ujstore;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.PointF;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,7 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
     private int expandedPosition = -1;
     private ArrayList<String> mDataset;
     private ArrayList<String> StoreType;
+    private ArrayList<String> imageUrl;
     private Context mContext;
     int a=0;
 
@@ -42,6 +44,7 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
         public CardView mCardView;
         public TextView mTextView;
         public TextView storeText;
+        public TextView viewimage;
         private Button apply;
         private Button reject;
         LinearLayout llExpandArea;
@@ -52,6 +55,7 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
             mCardView = (CardView) v.findViewById(R.id.card_view);
             mTextView = (TextView) v.findViewById(R.id.tv_text);
             storeText = (TextView) v.findViewById(R.id.type);
+            viewimage = (TextView) v.findViewById(R.id.viewimage);
             apply = (Button) v.findViewById(R.id.apply);
             reject = (Button) v.findViewById(R.id.reject);
             llExpandArea = (LinearLayout) itemView.findViewById(R.id.llExpandArea);
@@ -60,9 +64,10 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public OneAdapter (Context context, ArrayList<String> myDataset, ArrayList<String> StoreType){
+    public OneAdapter (Context context, ArrayList<String> myDataset, ArrayList<String> StoreType, ArrayList<String> imageUrl){
         this.mDataset = myDataset;
         this.StoreType = StoreType;
+        this.imageUrl = imageUrl;
         this.mContext = context;
     }
 
@@ -77,14 +82,16 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
         holder.itemView.setTag(holder);
         holder.apply.setOnClickListener(this);
         holder.reject.setOnClickListener(this);
+        holder.viewimage.setOnClickListener(this);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         if(a==0) {
             holder.mTextView.setText(mDataset.get(position));
             holder.storeText.setText(StoreType.get(position));
+            holder.viewimage.setText(imageUrl.get(position));
             if (position == expandedPosition) {
                 holder.llExpandArea.setVisibility(View.VISIBLE);
                 a=1;
@@ -95,6 +102,7 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
         else{
             holder.mTextView.setText(mDataset.get(position));
             holder.storeText.setText(StoreType.get(position));
+            holder.viewimage.setText(imageUrl.get(position));
             holder.llExpandArea.setVisibility(View.GONE);
             a=0;
         }
@@ -104,10 +112,22 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> im
                 acceptDialog();
             }
         });
+
         holder.reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rejectDialog();
+            }
+        });
+
+       holder.viewimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ImageView_Activity.class);
+                String imageurl="https://ujapi.herokuapp.com"+ imageUrl.get(position).toString();
+                System.out.println(imageurl);
+                intent.putExtra("imageUrl",imageurl);
+                v.getContext().startActivity(intent);
             }
         });
     }
