@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,8 +15,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -35,19 +40,22 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Created by DELL on 17-Jun-16.
  */
-public class OneFragment extends Fragment {
-    private ArrayList<String> myDataset;
-    private ArrayList<String> StoreType;
-    private ArrayList<String> imageUrl;
+public class OneFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+    private ArrayList<String> myDataset = new ArrayList<String>();
+    private ArrayList<String> StoreType = new ArrayList<String>();
+    private ArrayList<String> imageUrl = new ArrayList<String>();
+    private ArrayList<String> addString = new ArrayList<String>();
+    private ArrayList<String> lead_id = new ArrayList<String>();
     private OneAdapter adapter;
     SwipeRefreshLayout swipeRefreshLayout;
+    CoordinatorLayout coordinatorLayout;
     private String URL = "https://ujapi.herokuapp.com/api/v1/s/bookings/openall";
-
+    SharedPreferences pref;
+    int check_update=0;
 
     public OneFragment() {
         // Required empty public constructor
@@ -59,52 +67,81 @@ public class OneFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_one, container, false);
-        data();
-
-        final RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+        final View rootView = inflater.inflate(R.layout.fragment_one, container, false);
+        coordinatorLayout = (CoordinatorLayout)rootView.findViewById(R.id.coordinator_layout);
+        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         rv.setHasFixedSize(true);
-        adapter = new OneAdapter(getContext(), myDataset, StoreType, imageUrl);
+        swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
+        System.out.println("Mei");
+        adapter = new OneAdapter(getContext(), myDataset, StoreType, imageUrl, addString, lead_id);
         rv.setAdapter(adapter);
-
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
-        swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_orange_light,
                 android.R.color.holo_orange_dark);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefreshLayout.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        pref = getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                                        int x = pref.getInt("check", 0);
+                                        data();
+                                        adapter.notifyDataSetChanged();
+                                        int a = x - check_update;
+                                        if (a != 0) {
+                                            Snackbar.make(coordinatorLayout, "Updated List:" + a, Snackbar.LENGTH_SHORT).show();
+                                            System.out.println("Snackbar");
+                                            check_update = x;
+                                        } else {
+                                            Snackbar.make(coordinatorLayout, "No Updates", Snackbar.LENGTH_SHORT).show();
+                                            System.out.println("Snack");
+                                        }
+                                    }
+                                }
+        );
+
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onRefresh() {
-                myDataset.clear();
-                StoreType.clear();
-                imageUrl.clear();
-                swipeRefreshLayout.setRefreshing(true);
+            public void run() {
                 data();
-                adapter = new OneAdapter(getContext(), myDataset, StoreType, imageUrl);
-                rv.setAdapter(adapter);
-                ( new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 3000);
+                adapter.notifyDataSetChanged();
+                handler.postDelayed(this, 60 * 1000);
             }
-        });
+        }, 60 * 1000);
         return rootView;
     }
 
+    public void onRefresh() {
+        pref = getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        int x =pref.getInt("check", 0);
+        data();
+        adapter.notifyDataSetChanged();
+        int a=x-check_update;
+        if(a!=0){
+            Snackbar.make(coordinatorLayout,"Updated List:"+a,Snackbar.LENGTH_SHORT).show();
+        }
+        else
+            Snackbar.make(coordinatorLayout,"No Updates",Snackbar.LENGTH_SHORT).show();
+    }
+
+
     public void data() {
-        SharedPreferences pref = getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        myDataset.clear();
+        StoreType.clear();
+        imageUrl.clear();
+        addString.clear();
+        lead_id.clear();
+        swipeRefreshLayout.setRefreshing(true);
+        pref = this.getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         final String authtoken = pref.getString("token", null);
-        myDataset = new ArrayList<String>();
-        StoreType = new ArrayList<String>();
-        imageUrl = new ArrayList<String>();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 URL,
                 new Response.Listener<JSONArray>() {
@@ -124,13 +161,19 @@ public class OneFragment extends Fragment {
                                 String a2 = a1obj.getString("attachment");
                                 JSONObject a3 = new JSONObject(a2);
                                 imageUrl.add(a3.getString("url"));
-
+                                addString.add(object.getString("address"));
+                                lead_id.add(object.getString("id"));
                             }
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putInt("check",response.length());
+                            editor.apply();
                             adapter.notifyDataSetChanged();
+                            swipeRefreshLayout.setRefreshing(false);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -138,6 +181,7 @@ public class OneFragment extends Fragment {
                 if (error instanceof NoConnectionError) {
                     Toast.makeText(getContext(), "No internet Access, Check your internet connection.", Toast.LENGTH_SHORT).show();
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
         }) {
             @Override
@@ -152,7 +196,6 @@ public class OneFragment extends Fragment {
                 return Request.Priority.IMMEDIATE;
             }
         };
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonArrayRequest);
 

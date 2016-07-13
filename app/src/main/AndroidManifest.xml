@@ -3,7 +3,8 @@
     package="com.example.dell.ujstore">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +15,7 @@
         <activity
             android:name=".MainActivity"
             android:label="UncleJoy Store Partner"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,32 +25,46 @@
         </activity>
         <activity
             android:name=".SwipeTabActivity"
-            android:label="UncleJoy Store Partner" />
+            android:label="UncleJoy Store Partner"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SignUp_Activity"
             android:label="SignUp"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".privacy_activity"
-            android:parentActivityName=".SwipeTabActivity" />
+            android:parentActivityName=".SwipeTabActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".term_activity"
-            android:parentActivityName=".SwipeTabActivity" />
+            android:parentActivityName=".SwipeTabActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".setting_activity"
-            android:parentActivityName=".SwipeTabActivity" />
+            android:parentActivityName=".SwipeTabActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".profile_activity"
-            android:parentActivityName=".SwipeTabActivity" />
+            android:parentActivityName=".SwipeTabActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".sharable_activity"
-            android:parentActivityName=".SwipeTabActivity" />
+            android:parentActivityName=".SwipeTabActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".howworks_activity"
-            android:parentActivityName=".SwipeTabActivity">
-        </activity>
-        <activity android:name=".ImageView_Activity">
-        </activity>
+            android:parentActivityName=".SwipeTabActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ImageView_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".profile2_activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".get_started"
+            android:label="@string/title_activity_get_started"></activity>
     </application>
 
 </manifest>

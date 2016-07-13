@@ -3,15 +3,20 @@ package com.example.dell.ujstore;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,6 +26,10 @@ import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -36,6 +45,8 @@ public class ImageView_Activity extends AppCompatActivity {
         setContentView(R.layout.image_view_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         String url = getIntent().getExtras().getString("imageUrl");
         System.out.print(url);
 
@@ -60,14 +71,13 @@ public class ImageView_Activity extends AppCompatActivity {
 
         Picasso.with(this)
                 .load(url)
-                .fit()
                 .into(mImageView, imageLoadedCallback);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main2, menu);
         return true;
     }
 
@@ -79,7 +89,7 @@ public class ImageView_Activity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.download) {
             String url = getIntent().getExtras().getString("imageUrl");
             File direct = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                     + "/UjImages");
@@ -103,6 +113,32 @@ public class ImageView_Activity extends AppCompatActivity {
 
             mgr.enqueue(request);
         return true;
+        }
+
+        if(id == R.id.share){
+           ImageView iv = (ImageView )findViewById(R.id.imageView);
+            iv.getDrawable();
+            String fileName = "image.jpg";
+    iv.setDrawingCacheEnabled(true);
+    Bitmap bitmap = iv.getDrawingCache();
+    try
+    {
+        FileOutputStream ostream = this.openFileOutput( fileName, Context.MODE_WORLD_READABLE);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+        ostream.close();
+    }
+    catch (Exception e)
+    {
+        e.printStackTrace();
+    }
+
+    Intent share = new Intent(Intent.ACTION_SEND);
+    share.setType("image/*");
+    share.putExtra(Intent.EXTRA_SUBJECT, "Great photo from Poland!");
+    share.putExtra(Intent.EXTRA_TEXT, "Hi,  I'm sharing with you this great picture!");
+    share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile( new File( this.getFileStreamPath( fileName).getAbsolutePath())));
+    startActivity(Intent.createChooser(share,"Share via"));
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

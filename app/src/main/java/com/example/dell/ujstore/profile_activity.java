@@ -1,11 +1,14 @@
 package com.example.dell.ujstore;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -14,14 +17,7 @@ public class profile_activity extends AppCompatActivity {
     private EditText editTextName;
     private EditText editTextEmail;
     private EditText editTextPhone;
-    private EditText editTextsName;
-    private EditText editTextsAdd;
-    private EditText editTextsMobile;
-    private EditText editTextsTiming;
-    private EditText editTextsEmail;
-    private EditText editTextsOff;
-    private EditText editTextsAbout;
-    private EditText editTextsCerti;
+    private Button buttonnext;
 
 
     @Override
@@ -35,14 +31,15 @@ public class profile_activity extends AppCompatActivity {
         editTextName = (EditText) findViewById(R.id.nameText);
         editTextEmail = (EditText) findViewById(R.id.emailText);
         editTextPhone = (EditText) findViewById(R.id.phoneText);
-        editTextsName = (EditText) findViewById(R.id.sNameText);
-        editTextsAdd = (EditText) findViewById(R.id.sAddText);
-        editTextsMobile = (EditText) findViewById(R.id.sMobile);
-        editTextsEmail = (EditText) findViewById(R.id.sEmail);
-        editTextsTiming = (EditText) findViewById(R.id.sTiming);
-        editTextsOff = (EditText) findViewById(R.id.sOffDay);
-        editTextsAbout = (EditText) findViewById(R.id.sAbout);
-        editTextsCerti = (EditText) findViewById(R.id.sCertified);
+        buttonnext = (Button) findViewById(R.id.btnnext);
+        buttonnext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(profile_activity.this,profile2_activity.class);
+                startActivity(intent);
+                return;
+            }
+        });
 
 
     }

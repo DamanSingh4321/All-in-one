@@ -4,22 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#d9d7d7">
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:transitionGroup="false"
-            android:background="#ff9000">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -29,7 +19,6 @@
                 android:id="@+id/textView"
                 android:layout_gravity="center_horizontal"
                 android:paddingTop="8dp"
-                android:textColor="#ffffff"
                 android:textStyle="bold" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -80,179 +69,12 @@
                 app:met_underlineColor="@android:color/white"
                 app:met_primaryColor="@android:color/white"
                 app:met_floatingLabelTextColor="@android:color/white" />
-            <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sNameText"
-        android:layout_gravity="center_horizontal"
-        android:hint="Store name"
-        android:singleLine="true"
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPostalAddress"
-        android:ems="10"
-        android:id="@+id/sAddText"
-        android:layout_gravity="center_horizontal"
-        android:hint="Store address"
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Store category"
-                android:textSize="15dp"
-                android:layout_marginLeft="1dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="#ffffff" />
 
-            <com.rey.material.widget.CheckBox
-                style="@style/Material.Drawable.CheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Material Problem"
-                android:gravity="center"
-                android:layout_marginLeft="20dp"
-                app:cbd_strokeColor="@android:color/white"
-                app:cbd_tickColor="#ff9000"
-                android:textColor="#ffffff" />
-            <com.rey.material.widget.CheckBox
-                style="@style/Material.Drawable.CheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Location Problem"
-                android:gravity="center"
-                android:layout_marginLeft="20dp"
-                app:cbd_strokeColor="@android:color/white"
-                app:cbd_tickColor="#ff9000"
-                android:textColor="#ffffff" />
-            <com.rey.material.widget.CheckBox
-                style="@style/Material.Drawable.CheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Transportation Problem"
-                android:gravity="center"
-                android:layout_marginLeft="20dp"
-                app:cbd_strokeColor="@android:color/white"
-                app:cbd_tickColor="#ff9000"
-                android:textColor="#ffffff" />
-
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:id="@+id/sMobile"
-        android:layout_gravity="center_horizontal"
-        android:hint="Store mobile no."
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
-            <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/sEmail"
-        android:hint="Store email id"
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
-            <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="time"
-        android:ems="10"
-        android:id="@+id/sTiming"
-        android:layout_gravity="center_horizontal"
-        android:hint="Store Timings"
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
-            <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sOffDay"
-        android:layout_gravity="center_horizontal"
-        android:hint="Store off day"
-        android:singleLine="true"
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
-            <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/sAbout"
-        android:hint="Store Description"
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
-            <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sCertified"
-        android:hint="Certification/Authorized Distributor"
-        android:singleLine="true"
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upload"
-                android:id="@+id/upload"
+                android:text="Next"
+                android:id="@+id/btnnext"
                 android:layout_gravity="center_horizontal" />
-
-            </LinearLayout>
-    </ScrollView>
-
-
 
 </LinearLayout>

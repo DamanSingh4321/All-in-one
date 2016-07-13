@@ -27,7 +27,7 @@ package com.example.dell.ujstore;
         import java.util.Map;
 
 public class SignUp_Activity extends AppCompatActivity implements View.OnClickListener{
-    private static final String REGISTER_URL = "https://ujapi.herokuapp.com/api/v1/users";
+    private static final String REGISTER_URL = "https://ujapi.herokuapp.com/api/v1/s/stores";
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextName;
@@ -61,7 +61,7 @@ public class SignUp_Activity extends AppCompatActivity implements View.OnClickLi
             jsonobject_one.put("email", email);
             jsonobject_one.put("password", password);
 
-            js.put("user",jsonobject_one);
+            js.put("store",jsonobject_one);
 
         }catch (JSONException e) {
             e.printStackTrace();

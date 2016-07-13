@@ -3,14 +3,11 @@ package com.example.dell.ujstore;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,9 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,10 +50,31 @@ public class SwipeTabActivity extends AppCompatActivity
         tvemail.setText(email);
         tvname.setText(name);
         mViewPager = (ViewPager) findViewById(R.id.container);
-        setupViewPager(mViewPager);
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.addTab(tabLayout.newTab().setText("NEW LEAD"));
+        tabLayout.addTab(tabLayout.newTab().setText("RESPONSE"));
+        tabLayout.addTab(tabLayout.newTab().setText("HIRE"));
+        tabLayout.setTabGravity(tabLayout.GRAVITY_FILL);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount(),mViewPager);
+        mViewPager.setAdapter(adapter);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+             mViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override
@@ -87,6 +103,8 @@ public class SwipeTabActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this,get_started.class);
+            startActivity(intent);
             return true;
         }
 
@@ -137,40 +155,38 @@ public class SwipeTabActivity extends AppCompatActivity
         return true;
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(), "NEW LEAD");
-        adapter.addFragment(new TwoFragment(), "RESPONSE");
-        adapter.addFragment(new ThreeFragment(), "HIRE");
-        viewPager.setAdapter(adapter);
-    }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
+    public class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final ViewPager viewpager;
+        int nooftabs;
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        public ViewPagerAdapter(FragmentManager manager, int nooftabs, ViewPager viewPager) {
             super(manager);
+            this.nooftabs = nooftabs;
+            this.viewpager = viewPager;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return mFragmentList.get(position);
+            switch (position){
+                case 0:
+                    Fragment f1 = new OneFragment();
+                    return f1;
+                case 1:
+                    Fragment f2 = new TwoFragment();
+                    return f2;
+                case 2:
+                    Fragment f3 = new ThreeFragment();
+                    return f3;
+                default:
+                    return null;
+            }
         }
 
         @Override
         public int getCount() {
-            return mFragmentList.size();
+            return nooftabs;
         }
 
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
     }
 }
