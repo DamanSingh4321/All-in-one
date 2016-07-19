@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.dell.ujstore.Submit"
+    android:background="#455A64">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.rey.material.widget.TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ENTER DISCOUNT"
+        android:gravity="center_horizontal"
+        android:textSize="36dp"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:textColor="#FFFFFF" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentRight="true"
+        android:background="#ff9703" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+    <com.rey.material.widget.CheckBox
+        style="@style/Material.Drawable.CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkdiscount"
+        android:text="No discount"
+        android:gravity="center_vertical"
+        android:textSize="20dp"
+        android:checked="false"
+        android:clickable="false"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_vertical"
+        app:cbd_strokeColor="#ff9703"
+        app:cbd_tickColor="#FFFFFF"
+        android:textColor="#FFFFFF" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:background="#ff9703" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <com.appyvet.rangebar.RangeBar
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rangebar1"
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            custom:rangeBar="false"
+            custom:tickStart="0"
+            custom:tickInterval="1"
+            custom:tickEnd="20"
+            custom:tickColor="#ff9703"
+            custom:rangeBarColor="#ff9703"
+            custom:selectorColor="#ff9703"
+            custom:textColor="#FFFFFF"
+            custom:pinColor="#ff9703"
+            custom:connectingLineColor="#ff9703"
+            android:layout_gravity="left"
+            android:layout_weight="4" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/seektext1"
+            android:layout_weight="1"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:focusableInTouchMode="true"
+            android:text="0"
+            android:inputType="number"
+            android:longClickable="false"
+            android:numeric="integer"
+            android:singleLine="true"
+            android:gravity="center"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:background="#ff9703" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextmin"
+            android:hint="Enter minimum amount"
+            android:inputType="number"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_textColor="@android:color/white"
+            app:met_helperTextColor="@android:color/white"
+            app:met_baseColor="@android:color/white"
+            app:met_textColorHint="@android:color/white"
+            app:met_underlineColor="@android:color/white"
+            app:met_primaryColor="@android:color/white"
+            app:met_floatingLabelTextColor="@android:color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextmindis"
+            android:hint="Enter discount"
+            android:inputType="number"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_textColor="@android:color/white"
+            app:met_helperTextColor="@android:color/white"
+            app:met_baseColor="@android:color/white"
+            app:met_textColorHint="@android:color/white"
+            app:met_underlineColor="@android:color/white"
+            app:met_primaryColor="@android:color/white"
+            app:met_floatingLabelTextColor="@android:color/white" />
+
+     </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:weightSum="2"
+        android:layout_gravity="bottom"
+        android:baselineAligned="false">
+        <com.rey.material.widget.Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reject"
+            android:id="@+id/rejectsub"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            style="@style/Material.Drawable.Ripple.Wave.Light"
+            app:rd_enable="true"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="bottom" />
+
+        <com.rey.material.widget.Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/applysub"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            style="@style/Material.Drawable.Ripple.Wave.Light"
+            app:rd_enable="true"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -41,67 +41,66 @@ public class TwoAdapter extends RecyclerView.Adapter<TwoAdapter.MyViewHolder> {
     private ArrayList<String> StoreType;
     private ArrayList<String> imageUrl;
     private ArrayList<String> addString;
-    private ArrayList<String> lead_id;
+    private ArrayList<String> date;
+    private ArrayList<String> time;
+    private ArrayList<String> ago;
     private Context mContext;
-    SharedPreferences pref;
     ViewPager viewPager;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public  class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public CardView mCardView;
-        public TextView mTextView;
-        public TextView storeText;
-        public TextView viewimage;
-        public TextView adress;
-        private Button apply;
-        private Button reject;
-        ExpandableLayout llExpandArea;
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public CardView mCardView2;
+        public TextView mTextView2;
+        public TextView storeText2;
+        public TextView viewimage2;
+        public TextView adress2;
+        public TextView time_ago2;
+        public TextView booking_time2;
+        public TextView booking_date2;
+        ExpandableLayout llExpandArea2;
 
         public MyViewHolder(View v) {
             super(v);
-            viewPager = (ViewPager) ((SwipeTabActivity)mContext).findViewById(R.id.container);
-            mCardView = (CardView) v.findViewById(R.id.card_view);
-            mTextView = (TextView) v.findViewById(R.id.tv_text);
-            storeText = (TextView) v.findViewById(R.id.type);
-            viewimage = (TextView) v.findViewById(R.id.viewimage);
-            adress = (TextView) v.findViewById(R.id.address);
-            apply = (Button) v.findViewById(R.id.apply);
-            reject = (Button) v.findViewById(R.id.reject);
-            llExpandArea = (ExpandableLayout) itemView.findViewById(R.id.llExpandArea);
-            mCardView.setOnClickListener(this);
-            reject.setOnClickListener(this);
+            viewPager = (ViewPager) ((SwipeTabActivity) mContext).findViewById(R.id.container);
+            mCardView2 = (CardView) v.findViewById(R.id.card_view2);
+            mTextView2 = (TextView) v.findViewById(R.id.tv_text2);
+            storeText2 = (TextView) v.findViewById(R.id.type2);
+            viewimage2 = (TextView) v.findViewById(R.id.viewimage2);
+            adress2 = (TextView) v.findViewById(R.id.address2);
+            time_ago2 = (TextView) v.findViewById(R.id.time_ago2);
+            booking_date2 = (TextView) v.findViewById(R.id.booking_date2);
+            booking_time2 = (TextView) v.findViewById(R.id.booking_time2);
+            llExpandArea2 = (ExpandableLayout) v.findViewById(R.id.llExpandArea2);
+            mCardView2.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            if(view == mCardView) {
+            if (view == mCardView2) {
                 MyViewHolder holder = (MyViewHolder) view.getTag();
-                if (holder.llExpandArea.isCollapsed()) {
-                    holder.llExpandArea.expand();
+                if (holder.llExpandArea2.isExpanded()) {
+                    holder.llExpandArea2.collapse();
                 } else {
-                    holder.llExpandArea.collapse();
+                    holder.llExpandArea2.expand();
                 }
-            }
-            if(view == apply){
-                acceptDialog();
-            }
-            if (view == reject){
-                rejectDialog();
             }
         }
 
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TwoAdapter (Context context, ArrayList<String> myDataset, ArrayList<String> StoreType,
-                       ArrayList<String> imageUrl, ArrayList<String> addString, ArrayList<String> lead_id){
+    public TwoAdapter(Context context, ArrayList<String> myDataset, ArrayList<String> StoreType,
+                      ArrayList<String> imageUrl, ArrayList<String> addString,
+                      ArrayList<String> date, ArrayList<String> time, ArrayList<String> ago) {
         this.mDataset = myDataset;
         this.StoreType = StoreType;
         this.imageUrl = imageUrl;
         this.addString = addString;
-        this.lead_id = lead_id;
+        this.date = date;
+        this.time = time;
+        this.ago = ago;
         this.mContext = context;
     }
 
@@ -109,35 +108,26 @@ public class TwoAdapter extends RecyclerView.Adapter<TwoAdapter.MyViewHolder> {
     @Override
     public TwoAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cards_layout, parent, false);
+                .inflate(R.layout.card2_layout, parent, false);
         MyViewHolder holder = new MyViewHolder(v);
-        parent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyViewHolder holder = (MyViewHolder) v.getTag();
-                if (holder.llExpandArea.isCollapsed()) {
-                    holder.llExpandArea.expand();
-                } else {
-                    holder.llExpandArea.collapse();
-                }
-            }
-        });
-        holder.mCardView.setTag(holder);
+        holder.mCardView2.setTag(holder);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.mTextView.setText(mDataset.get(position));
-        holder.storeText.setText(StoreType.get(position));
-        holder.adress.setText(addString.get(position));
-//        final String id = lead_id.get(position);
+        holder.mTextView2.setText(mDataset.get(position));
+        holder.storeText2.setText(StoreType.get(position));
+        holder.adress2.setText(addString.get(position));
+        holder.time_ago2.setText(ago.get(position));
+        holder.booking_date2.setText(date.get(position));
+        holder.booking_time2.setText(time.get(position));
         String s = imageUrl.get(position);
         if (s == "null") {
-            holder.viewimage.setVisibility(View.GONE);
+            holder.viewimage2.setVisibility(View.GONE);
         } else
-            holder.viewimage.setVisibility(View.VISIBLE);
-        holder.viewimage.setOnClickListener(new View.OnClickListener() {
+            holder.viewimage2.setVisibility(View.VISIBLE);
+        holder.viewimage2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ImageView_Activity.class);
@@ -147,130 +137,11 @@ public class TwoAdapter extends RecyclerView.Adapter<TwoAdapter.MyViewHolder> {
                 v.getContext().startActivity(intent);
             }
         });
-        holder.apply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.viewimage.getVisibility() == View.VISIBLE) {
-                    acceptDialog();
-                } else {
-                   // submiit(id);
-                }
-            }
-        });
     }
-
-    @Override
-    public void onViewRecycled(MyViewHolder holder) {
-        holder.llExpandArea.collapse();
-    }
-
 
     @Override
     public int getItemCount() {
         return mDataset.size();
-    }
-
-    private void acceptDialog(){
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View subView = inflater.inflate(R.layout.dialog_accept, null);
-        final EditText seektext = (EditText)subView.findViewById(R.id.seektext);
-        RangeBar rangebar = (RangeBar)subView.findViewById(R.id.rangebar);
-        float seek = Float.parseFloat(seektext.getText().toString());
-        rangebar.setRangePinsByValue(0,seek);
-        rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex,
-                                              int rightPinIndex,
-                                              String leftPinValue, String rightPinValue) {
-                seektext.setText(rightPinValue);
-
-            }
-        });
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("AlertDialog");
-        builder.setMessage("AlertDialog Message");
-        builder.setView(subView);
-        AlertDialog alertDialog = builder.create();
-
-        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(mContext, "Cancel", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        builder.show();
-    }
-    private void rejectDialog(){
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View subView = inflater.inflate(R.layout.dialog_reject, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("AlertDialog");
-        builder.setMessage("AlertDialog Message");
-        builder.setView(subView);
-        AlertDialog alertDialog = builder.create();
-
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(mContext, "Yes",Toast.LENGTH_LONG).show();
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(mContext, "No", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        builder.show();
-    }
-    private void submiit(String id) {
-        String Submit_Url = "https://ujapi.herokuapp.com/api/v1/s/bookings/" + id + "/respond_bookings";
-        pref = this.mContext.getSharedPreferences("MyPref", 0); // 0 - for private mode
-        final String authtoken = pref.getString("token", null);
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("discount", "0");
-            jsonBody.put("booking_id", id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST,
-                Submit_Url, jsonBody,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        viewPager.setCurrentItem(1);
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                headers.put("Authorization", authtoken);
-                return headers;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this.mContext);
-        requestQueue.add(jsonObject);
     }
 
 }

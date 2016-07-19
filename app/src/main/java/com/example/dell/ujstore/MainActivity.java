@@ -2,7 +2,9 @@ package com.example.dell.ujstore;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,12 +26,18 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-private static final String LOGIN_URL = "https://ujapi.herokuapp.com/api/v1/s/login";
-private EditText editTextEmail;
-private EditText editTextPassword;
-private TextView editTextSignup;
-private Button buttonLogin;
+    private static final String LOGIN_URL = "https://ujapi.herokuapp.com/api/v1/s/login";
+    private EditText editTextEmail;
+    private EditText editTextPassword;
+    private TextView editTextSignup;
+    private TextView editTextForget;
+    private Button buttonLogin;
+    SharedPreferences pref;
+    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    SweetAlertDialog pDialog;
 
 
         @Override
@@ -38,7 +46,8 @@ private Button buttonLogin;
             setContentView(R.layout.login_layout);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+            pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            pref = getApplicationContext().getSharedPreferences("MyPref", 0);
             if (pref.contains("name")) {
                 Intent intent = new Intent(MainActivity.this,SwipeTabActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -49,80 +58,111 @@ private Button buttonLogin;
                 editTextEmail = (EditText) findViewById(R.id.editTextEmail);
                 editTextPassword = (EditText) findViewById(R.id.editTextPassword);
                 editTextSignup = (TextView) findViewById(R.id.editTextSignup);
+                editTextForget = (TextView) findViewById(R.id.forgettext);
                 buttonLogin = (Button) findViewById(R.id.buttonLogin);
                 buttonLogin.setOnClickListener(this);
                 editTextSignup.setOnClickListener(this);
+                editTextForget.setOnClickListener(this);
             }
         }
-        private void LoginUser(){
+        private void LoginUser() {
             final String password = editTextPassword.getText().toString().trim();
             final String email = editTextEmail.getText().toString().trim();
-            JSONObject js =new JSONObject();
-            try {
-                JSONObject jsonobject_one = new JSONObject();
+            if (!email.matches(emailPattern) || email.isEmpty()) {
+                editTextEmail.setError("Inavalid email");
+            } else if (password.isEmpty() || password.length() < 8) {
+                editTextPassword.setError("Password should be greater than 8 characters");
+            } else {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                jsonobject_one.put("email", email);
-                jsonobject_one.put("password", password);
+                        JSONObject js = new JSONObject();
+                        try {
+                            JSONObject jsonobject_one = new JSONObject();
 
-                js.put("session",jsonobject_one);
+                            jsonobject_one.put("email", email);
+                            jsonobject_one.put("password", password);
 
-            }catch (JSONException e) {
-                e.printStackTrace();
-            }
+                            js.put("session", jsonobject_one);
 
-            JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST,
-                    LOGIN_URL, js,
-                    new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                String name = response.getString("name");
-                                String authtoken = response.getString("authentication_token");
-                                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-                                SharedPreferences.Editor editor = pref.edit();
-                                editor.putString("name", name);
-                                editor.putString("token",authtoken );
-                                editor.putString("email", email);
-                                editor.commit();
-                                Intent intent = new Intent(MainActivity.this,SwipeTabActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-
-
-                            } catch (JSONException e) {
-                                Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_LONG).show();
-                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    }, new Response.ErrorListener() {
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(MainActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST,
+                                LOGIN_URL, js,
+                                new Response.Listener<JSONObject>() {
 
-                }
-            }) {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+                                            String name = response.getString("name");
+                                            String authtoken = response.getString("authentication_token");
+                                            pref = getBaseContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                                            SharedPreferences.Editor editor = pref.edit();
+                                            editor.putString("name", name);
+                                            editor.putString("token", authtoken);
+                                            editor.putString("email", email);
+                                            editor.commit();
+                                            Intent intent = new Intent(MainActivity.this, SwipeTabActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
 
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("Content-Type", "application/json; charset=utf-8");
-                    return headers;
-                }
-            };
 
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(jsonObject);
+                                        } catch (JSONException e) {
+                                            Toast.makeText(MainActivity.this, "Invalid email or password", Toast.LENGTH_LONG).show();
+                                            pDialog.dismiss();
+
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(MainActivity.this, "Invalid email or password", Toast.LENGTH_LONG).show();
+                                pDialog.dismiss();
+                            }
+                        }) {
+
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                HashMap<String, String> headers = new HashMap<String, String>();
+                                headers.put("Content-Type", "application/json; charset=utf-8");
+                                return headers;
+                            }
+                        };
+
+                        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+                        requestQueue.add(jsonObject);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                                pDialog.setTitleText("Loading");
+                                pDialog.setCancelable(false);
+                                pDialog.show();
+                            }
+                        });
+                    }
+                }).start();
+
+            }
         }
 
         @Override
         public void onClick(View v) {
-            if(v == buttonLogin){
+            if(v == buttonLogin) {
                 LoginUser();
             }
             if(v == editTextSignup){
                 startActivity(new Intent(this, SignUp_Activity.class));
+            }
+            if(v == editTextForget){
+                startActivity(new Intent(this, ForgetPassword.class));
             }
         }
     @Override

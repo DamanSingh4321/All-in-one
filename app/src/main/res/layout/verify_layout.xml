@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.dell.ujstore.Verify">
+
+    <include layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="40dp"
+        android:background="#455A64">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Wait for a while! We are verifying your mobile number."
+            android:id="@+id/textView5"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textColor="#FFFFFF" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextotp"
+        android:hint="Enter OTP"
+        android:inputType="number"
+        android:singleLine="true"
+        app:met_iconLeft="@drawable/ic_user"
+        app:met_floatingLabel="highlight"
+        app:met_textColor="@android:color/white"
+        app:met_helperTextColor="@android:color/white"
+        app:met_baseColor="@android:color/white"
+        app:met_textColorHint="@android:color/white"
+        app:met_underlineColor="@android:color/white"
+        app:met_primaryColor="@android:color/white"
+        app:met_floatingLabelTextColor="@android:color/white"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp" />
+
+    <com.rey.material.widget.Button
+        android:text="SUBMIT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:id="@+id/buttonverify"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorAccent"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not recieved OTP?"
+                android:textSize="12dp"
+                android:textIsSelectable="false"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="20dp">
+            </TextView>
+            <TextView android:text=" RESEND OTP"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="14dp"
+                android:textColor="#FFEB3B"
+                android:clickable="true"
+                android:id="@+id/editTextresend"
+                android:layout_marginTop="20dp">
+            </TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

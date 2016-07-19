@@ -30,7 +30,7 @@ public class profile_activity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         editTextName = (EditText) findViewById(R.id.nameText);
         editTextEmail = (EditText) findViewById(R.id.emailText);
-        editTextPhone = (EditText) findViewById(R.id.phoneText);
+        editTextPhone = (EditText) findViewById(R.id.mobileText);
         buttonnext = (Button) findViewById(R.id.btnnext);
         buttonnext.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,39 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.dell.uj_login1.MainActivity">
+    tools:context="com.example.dell.uj_login1.MainActivity"
+    android:background="#455A64">
     <include layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="20dp">
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/imageView6"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ujstororiginal" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:layout_marginTop="10dp"
         android:id="@+id/editTextEmail"
-        android:hint="Email" />
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:singleLine="true"
+        app:met_iconLeft="@drawable/ic_user"
+        app:met_floatingLabel="highlight"
+        app:met_textColor="@android:color/white"
+        app:met_helperTextColor="@android:color/white"
+        app:met_baseColor="@android:color/white"
+        app:met_textColorHint="@android:color/white"
+        app:met_underlineColor="@android:color/white"
+        app:met_primaryColor="@android:color/white"
+        app:met_floatingLabelTextColor="@android:color/white"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp" />
 
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextPassword"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                app:met_iconLeft="@drawable/ic_password"
+                app:met_floatingLabel="highlight"
+                app:met_textColor="@android:color/white"
+                app:met_helperTextColor="@android:color/white"
+                app:met_baseColor="@android:color/white"
+                app:met_textColorHint="@android:color/white"
+                app:met_underlineColor="@android:color/white"
+                app:met_primaryColor="@android:color/white"
+                app:met_floatingLabelTextColor="@android:color/white" />
 
-    <EditText
+        <com.rey.material.widget.Button
+        android:text="Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:layout_marginTop="10dp"
-        android:id="@+id/editTextPassword"
-        android:hint="Password" />
-
-    <Button
-        android:text="Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="25dp"
         android:id="@+id/buttonLogin"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorAccent"
+        android:textColor="#FFFFFF"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,16 +83,30 @@
             android:layout_height="wrap_content"
             android:text="Not having an account?"
             android:textSize="12dp"
-            android:textIsSelectable="false">
+            android:textIsSelectable="false"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="20dp">
         </TextView>
-        <TextView android:text="SignUp"
+        <TextView android:text=" SignUp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textSize="14dp"
-            android:textColor="#0000ff"
+            android:textColor="#FFEB3B"
             android:clickable="true"
-            android:id="@+id/editTextSignup">
+            android:id="@+id/editTextSignup"
+            android:layout_marginTop="20dp">
         </TextView>
         </LinearLayout>
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forgot your Password?"
+                android:textSize="12dp"
+                android:id="@+id/forgettext"
+                android:textIsSelectable="false"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal">
+            </TextView>
+    </LinearLayout>
 
 </LinearLayout>

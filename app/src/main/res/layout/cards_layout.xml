@@ -37,7 +37,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
             <TextView
-                android:id="@+id/time"
+                android:id="@+id/time_ago"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|right"
@@ -94,15 +94,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/booking_date"
                 android:layout_margin="6dp"
-                android:text="Date and Time : dd/mm/yyyy"
                 android:gravity="left" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
-                android:text="Date and Time : dd/mm/yyyy"
+                android:id="@+id/booking_time"
                 android:gravity="left" />
             <TextView
                 android:layout_width="wrap_content"
@@ -119,22 +119,36 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:weightSum="2">
-                <Button
+                <com.rey.material.widget.Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Reject"
                     android:id="@+id/reject"
                     android:gravity="center"
-                    android:layout_weight="1"/>
-                <Button
+                    android:layout_weight="1"
+                    android:background="@color/colorAccent"
+                    style="@style/Material.Drawable.Ripple.Wave.Light"
+                    app:rd_enable="true"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF" />
+
+                <com.rey.material.widget.Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Submit"
                     android:id="@+id/apply"
                     android:gravity="center"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:background="@color/colorAccent"
+                    style="@style/Material.Drawable.Ripple.Wave.Light"
+                    app:rd_enable="true"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF" />
+
             </LinearLayout>
             </LinearLayout>
         </com.github.chuross.library.ExpandableLayout>

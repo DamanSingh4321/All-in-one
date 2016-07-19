@@ -40,6 +40,9 @@ public class TwoFragment extends Fragment implements SwipeRefreshLayout.OnRefres
     private ArrayList<String> imageUrl = new ArrayList<String>();
     private ArrayList<String> addString = new ArrayList<String>();
     private ArrayList<String> lead_id = new ArrayList<String>();
+    private ArrayList<String> date = new ArrayList<String>();
+    private ArrayList<String> time = new ArrayList<String>();
+    private ArrayList<String> ago = new ArrayList<String>();
     private TwoAdapter adapter;
     SwipeRefreshLayout swipeRefreshLayout;
     CoordinatorLayout coordinatorLayout;
@@ -68,7 +71,7 @@ public class TwoFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         rv.setHasFixedSize(true);
         swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout2);
         System.out.println("Mei");
-        adapter = new TwoAdapter(getContext(), myDataset, StoreType, imageUrl, addString, lead_id);
+        adapter = new TwoAdapter(getContext(), myDataset, StoreType, imageUrl, addString, date, time, ago);
         rv.setAdapter(adapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
@@ -129,16 +132,13 @@ public class TwoFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         imageUrl.clear();
         addString.clear();
         lead_id.clear();
+        date.clear();
+        time.clear();
+        ago.clear();
         swipeRefreshLayout.setRefreshing(true);
         pref = this.getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         final String authtoken = pref.getString("token", null);
-        for (int i=0;i<=10;i++){
-            myDataset.add("Name");
-            StoreType.add("Type");
-            imageUrl.add("null");
-            addString.add("Abc");
-        }
-       /* JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 URL,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -158,7 +158,10 @@ public class TwoFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                                 JSONObject a3 = new JSONObject(a2);
                                 imageUrl.add(a3.getString("url"));
                                 addString.add(object2.getString("address"));
-                                lead_id.add(object.getString("id"));
+                                lead_id.add(object2.getString("id"));
+                                date.add("Booking date: "+object2.getString("date"));
+                                time.add("Booking time: "+object2.getString("time"));
+                                ago.add(object2.getString("created_at")+" ago");
                             }
                             SharedPreferences.Editor editor = pref.edit();
                             editor.putInt("check",response.length());
@@ -194,6 +197,5 @@ public class TwoFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonArrayRequest);
-*/
     }
 }

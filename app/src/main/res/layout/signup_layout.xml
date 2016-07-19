@@ -1,42 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/linearlayout"
     android:orientation="vertical">
     <include layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="30dp"
+        android:background="#455A64">
+
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/editTextName2"
+        android:hint="Name"
         android:inputType="textPersonName"
-        android:layout_marginTop="10dp"
-        android:id="@+id/editTextName"
-        android:hint="Name" />
+        android:singleLine="true"
+        app:met_floatingLabel="highlight"
+        app:met_textColor="@android:color/white"
+        app:met_helperTextColor="@android:color/white"
+        app:met_baseColor="@android:color/white"
+        app:met_textColorHint="@android:color/white"
+        app:met_underlineColor="@android:color/white"
+        app:met_primaryColor="@android:color/white"
+        app:met_floatingLabelTextColor="@android:color/white" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/editTextEmail2"
+        android:hint="Email"
         android:inputType="textEmailAddress"
+        android:singleLine="true"
+        app:met_floatingLabel="highlight"
+        app:met_textColor="@android:color/white"
+        app:met_helperTextColor="@android:color/white"
+        app:met_baseColor="@android:color/white"
+        app:met_textColorHint="@android:color/white"
+        app:met_underlineColor="@android:color/white"
+        app:met_primaryColor="@android:color/white"
+        app:met_floatingLabelTextColor="@android:color/white"
         android:layout_marginTop="10dp"
-        android:id="@+id/editTextEmail"
-        android:hint="Email" />
+        android:layout_marginBottom="10dp" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/editTextPassword2"
+        android:hint="Password"
         android:inputType="textPassword"
-        android:layout_marginTop="10dp"
-        android:id="@+id/editTextPassword"
-        android:hint="Password" />
+        android:singleLine="true"
+        app:met_floatingLabel="highlight"
+        app:met_textColor="@android:color/white"
+        app:met_helperTextColor="@android:color/white"
+        app:met_baseColor="@android:color/white"
+        app:met_textColorHint="@android:color/white"
+        app:met_underlineColor="@android:color/white"
+        app:met_primaryColor="@android:color/white"
+        app:met_floatingLabelTextColor="@android:color/white" />
 
-    <Button
-        android:text="Register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/buttonRegister"
-        android:layout_gravity="center_horizontal" />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextRePassword2"
+            android:hint="Re-enter Password"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_textColor="@android:color/white"
+            app:met_helperTextColor="@android:color/white"
+            app:met_baseColor="@android:color/white"
+            app:met_textColorHint="@android:color/white"
+            app:met_underlineColor="@android:color/white"
+            app:met_primaryColor="@android:color/white"
+            app:met_floatingLabelTextColor="@android:color/white"
+            android:layout_marginTop="10dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <com.rey.material.widget.TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:met_textColor="@android:color/white"
+                android:text="+91"
+                android:textSize="14dp"
+                android:gravity="center|bottom"
+                android:textColor="#FFFFFF" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/editTextMobile2"
+            android:hint="Mobile number"
+            android:inputType="number"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_textColor="@android:color/white"
+            app:met_helperTextColor="@android:color/white"
+            app:met_baseColor="@android:color/white"
+            app:met_textColorHint="@android:color/white"
+            app:met_underlineColor="@android:color/white"
+            app:met_primaryColor="@android:color/white"
+            app:met_floatingLabelTextColor="@android:color/white"
+            android:layout_marginTop="10dp" />
+        </LinearLayout>
+
+        <com.rey.material.widget.Button
+            android:text="Register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:id="@+id/buttonRegister"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorAccent"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold" />
+    </LinearLayout>
 </LinearLayout>

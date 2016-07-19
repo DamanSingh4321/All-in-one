@@ -13,6 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,6 +44,9 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
     private ArrayList<String> imageUrl;
     private ArrayList<String> addString;
     private ArrayList<String> lead_id;
+    private ArrayList<String> date;
+    private ArrayList<String> time;
+    private ArrayList<String> ago;
     private Context mContext;
     SharedPreferences pref;
     ViewPager viewPager;
@@ -53,6 +59,9 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
         public TextView mTextView;
         public TextView storeText;
         public TextView viewimage;
+        public TextView time_ago;
+        public TextView booking_time;
+        public TextView booking_date;
         public TextView adress;
         private Button apply;
         private Button reject;
@@ -66,6 +75,9 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
             storeText = (TextView) v.findViewById(R.id.type);
             viewimage = (TextView) v.findViewById(R.id.viewimage);
             adress = (TextView) v.findViewById(R.id.address);
+            time_ago = (TextView) v.findViewById(R.id.time_ago);
+            booking_date = (TextView) v.findViewById(R.id.booking_date);
+            booking_time = (TextView) v.findViewById(R.id.booking_time);
             apply = (Button) v.findViewById(R.id.apply);
             reject = (Button) v.findViewById(R.id.reject);
             llExpandArea = (ExpandableLayout) itemView.findViewById(R.id.llExpandArea);
@@ -83,9 +95,6 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
                     holder.llExpandArea.collapse();
                 }
             }
-            if(view == apply){
-                acceptDialog();
-            }
             if (view == reject){
                 rejectDialog();
             }
@@ -95,12 +104,16 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public OneAdapter (Context context, ArrayList<String> myDataset, ArrayList<String> StoreType,
-                       ArrayList<String> imageUrl, ArrayList<String> addString, ArrayList<String> lead_id){
+                       ArrayList<String> imageUrl, ArrayList<String> addString, ArrayList<String> lead_id,
+                       ArrayList<String> date, ArrayList<String> time, ArrayList<String> ago){
         this.mDataset = myDataset;
         this.StoreType = StoreType;
         this.imageUrl = imageUrl;
         this.addString = addString;
         this.lead_id = lead_id;
+        this.date = date;
+        this.time = time;
+        this.ago = ago;
         this.mContext = context;
     }
 
@@ -127,35 +140,46 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.mTextView.setText(mDataset.get(position));
-        holder.storeText.setText(StoreType.get(position));
-        holder.adress.setText(addString.get(position));
-        final String id = lead_id.get(position);
-        String s = imageUrl.get(position);
-        if (s == "null") {
-            holder.viewimage.setVisibility(View.GONE);
-        } else
-            holder.viewimage.setVisibility(View.VISIBLE);
-        holder.viewimage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ImageView_Activity.class);
-                String imageurl = "https://ujapi.herokuapp.com" + imageUrl.get(position);
-                System.out.println(imageurl);
-                intent.putExtra("imageUrl", imageurl);
-                v.getContext().startActivity(intent);
-            }
-        });
-        holder.apply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.viewimage.getVisibility() == View.VISIBLE) {
-                    acceptDialog();
-                } else {
-                    submiit(id);
+        try {
+            holder.mTextView.setText(mDataset.get(position));
+            holder.storeText.setText(StoreType.get(position));
+            holder.adress.setText(addString.get(position));
+            holder.time_ago.setText(ago.get(position));
+            holder.booking_date.setText(date.get(position));
+            holder.booking_time.setText(time.get(position));
+            setScaleAnimation(holder.itemView);
+            final String id = lead_id.get(position);
+            String s = imageUrl.get(position);
+            if (s == "null") {
+                holder.viewimage.setVisibility(View.GONE);
+            } else
+                holder.viewimage.setVisibility(View.VISIBLE);
+            holder.viewimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ImageView_Activity.class);
+                    String imageurl = "https://ujapi.herokuapp.com" + imageUrl.get(position);
+                    System.out.println(imageurl);
+                    intent.putExtra("imageUrl", imageurl);
+                    v.getContext().startActivity(intent);
                 }
-            }
-        });
+            });
+            holder.apply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (holder.viewimage.getVisibility() == View.VISIBLE) {
+                        Intent intent = new Intent(mContext, Submit.class);
+                        intent.putExtra(id, "id");
+                        v.getContext().startActivity(intent);
+                    } else {
+                        submiit(id);
+                    }
+                }
+            });
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -169,44 +193,12 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
         return mDataset.size();
     }
 
-    private void acceptDialog(){
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View subView = inflater.inflate(R.layout.dialog_accept, null);
-        final EditText seektext = (EditText)subView.findViewById(R.id.seektext);
-        RangeBar rangebar = (RangeBar)subView.findViewById(R.id.rangebar);
-        float seek = Float.parseFloat(seektext.getText().toString());
-        rangebar.setRangePinsByValue(0,seek);
-        rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex,
-                                              int rightPinIndex,
-                                              String leftPinValue, String rightPinValue) {
-                seektext.setText(rightPinValue);
-
-            }
-        });
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("AlertDialog");
-        builder.setMessage("AlertDialog Message");
-        builder.setView(subView);
-        AlertDialog alertDialog = builder.create();
-
-        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(mContext, "Cancel", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        builder.show();
+    private void setScaleAnimation(View view) {
+        ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setDuration(200);
+        view.startAnimation(anim);
     }
+
     private void rejectDialog(){
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View subView = inflater.inflate(R.layout.dialog_reject, null);

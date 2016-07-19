@@ -41,6 +41,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+
 /**
  * Created by DELL on 17-Jun-16.
  */
@@ -48,8 +50,12 @@ public class OneFragment extends Fragment implements SwipeRefreshLayout.OnRefres
     private ArrayList<String> myDataset = new ArrayList<String>();
     private ArrayList<String> StoreType = new ArrayList<String>();
     private ArrayList<String> imageUrl = new ArrayList<String>();
+    private ArrayList<String> images = new ArrayList<String>();
     private ArrayList<String> addString = new ArrayList<String>();
     private ArrayList<String> lead_id = new ArrayList<String>();
+    private ArrayList<String> date = new ArrayList<String>();
+    private ArrayList<String> time = new ArrayList<String>();
+    private ArrayList<String> ago = new ArrayList<String>();
     private OneAdapter adapter;
     SwipeRefreshLayout swipeRefreshLayout;
     CoordinatorLayout coordinatorLayout;
@@ -78,7 +84,7 @@ public class OneFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         rv.setHasFixedSize(true);
         swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
         System.out.println("Mei");
-        adapter = new OneAdapter(getContext(), myDataset, StoreType, imageUrl, addString, lead_id);
+        adapter = new OneAdapter(getContext(), myDataset, StoreType, imageUrl, addString, lead_id, date, time, ago);
         rv.setAdapter(adapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
@@ -126,7 +132,7 @@ public class OneFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         adapter.notifyDataSetChanged();
         int a=x-check_update;
         if(a!=0){
-            Snackbar.make(coordinatorLayout,"Updated List:"+a,Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout,"Updated List: "+a,Snackbar.LENGTH_SHORT).show();
         }
         else
             Snackbar.make(coordinatorLayout,"No Updates",Snackbar.LENGTH_SHORT).show();
@@ -139,8 +145,11 @@ public class OneFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         imageUrl.clear();
         addString.clear();
         lead_id.clear();
+        date.clear();
+        time.clear();
+        ago.clear();
         swipeRefreshLayout.setRefreshing(true);
-        pref = this.getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+//        pref = getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         final String authtoken = pref.getString("token", null);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 URL,
@@ -156,13 +165,22 @@ public class OneFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                                 String storeid = object.getString("store_category");
                                 JSONObject storeobject = new JSONObject(storeid);
                                 StoreType.add(storeobject.getString("category"));
-                                String a1 = object.getString("attachment");
+                                String a1 = object.getString("attachments");
                                 JSONObject a1obj = new JSONObject(a1);
-                                String a2 = a1obj.getString("attachment");
-                                JSONObject a3 = new JSONObject(a2);
-                                imageUrl.add(a3.getString("url"));
+                                for (int j = 0; j < a1obj.length(); j++){
+                                    String a2 = a1obj.getString("attachment");
+                                    JSONObject a3 = new JSONObject(a2);
+                                    String a4 = a3.getString("attachment");
+                                    JSONObject a4obj = new JSONObject(a4);
+                                    images.add(a4obj.getString("url"));
+                                }
+                                imageUrl.add(images.toString());
+                                System.out.println(imageUrl.toString());
                                 addString.add(object.getString("address"));
                                 lead_id.add(object.getString("id"));
+                                date.add("Booking date: "+object.getString("date"));
+                                time.add("Booking time: "+object.getString("time"));
+                                ago.add(object.getString("created_at")+" ago");
                             }
                             SharedPreferences.Editor editor = pref.edit();
                             editor.putInt("check",response.length());

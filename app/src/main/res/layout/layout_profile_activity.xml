@@ -11,70 +11,91 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="LISTING YOUR STORE"
-                android:id="@+id/textView"
-                android:layout_gravity="center_horizontal"
-                android:paddingTop="8dp"
-                android:textStyle="bold" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="30dp"
+        android:background="#455A64">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/nameText"
-            android:hint="Name"
+            android:hint="Store Name"
+            android:inputType="textPersonName"
             android:singleLine="true"
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
+            app:met_floatingLabel="highlight"
+            app:met_textColor="@android:color/white"
+            app:met_helperTextColor="@android:color/white"
+            app:met_baseColor="@android:color/white"
+            app:met_textColorHint="@android:color/white"
+            app:met_underlineColor="@android:color/white"
+            app:met_primaryColor="@android:color/white"
+            app:met_floatingLabelTextColor="@android:color/white" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/emailText"
-        android:hint="Email"
-        android:singleLine="true"
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/emailText"
+            android:hint="Store Email"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_textColor="@android:color/white"
+            app:met_helperTextColor="@android:color/white"
+            app:met_baseColor="@android:color/white"
+            app:met_textColorHint="@android:color/white"
+            app:met_underlineColor="@android:color/white"
+            app:met_primaryColor="@android:color/white"
+            app:met_floatingLabelTextColor="@android:color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:id="@+id/phoneText"
-        android:hint="Mobile No."
-        android:singleLine="true"
-                app:met_floatingLabel="highlight"
-                app:met_textColor="@android:color/white"
-                app:met_helperTextColor="@android:color/white"
-                app:met_baseColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_floatingLabelTextColor="@android:color/white" />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addText"
+            android:hint="Store Address"
+            android:inputType="textPostalAddress"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_textColor="@android:color/white"
+            app:met_helperTextColor="@android:color/white"
+            app:met_baseColor="@android:color/white"
+            app:met_textColorHint="@android:color/white"
+            app:met_underlineColor="@android:color/white"
+            app:met_primaryColor="@android:color/white"
+            app:met_floatingLabelTextColor="@android:color/white" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Next"
-                android:id="@+id/btnnext"
-                android:layout_gravity="center_horizontal" />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mobileText"
+            android:hint="Store Mobile no."
+            android:inputType="number"
+            app:met_floatingLabel="highlight"
+            app:met_textColor="@android:color/white"
+            app:met_helperTextColor="@android:color/white"
+            app:met_baseColor="@android:color/white"
+            app:met_textColorHint="@android:color/white"
+            app:met_underlineColor="@android:color/white"
+            app:met_primaryColor="@android:color/white"
+            app:met_floatingLabelTextColor="@android:color/white"
+            android:layout_marginTop="10dp" />
 
+        <com.rey.material.widget.Button
+            android:text="NEXT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:id="@+id/btnnext"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorAccent"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold" />
+    </LinearLayout>
 </LinearLayout>
