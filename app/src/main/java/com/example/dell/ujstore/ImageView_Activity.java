@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -47,7 +48,7 @@ public class ImageView_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        String url = getIntent().getExtras().getString("imageUrl");
+        ArrayList<String> url = getIntent().getStringArrayListExtra("imageUrl");
         System.out.print(url);
 
         mImageView = (ImageView) findViewById(R.id.imageView);
@@ -68,10 +69,12 @@ public class ImageView_Activity extends AppCompatActivity {
 
             }
         };
-
-        Picasso.with(this)
-                .load(url)
-                .into(mImageView, imageLoadedCallback);
+        for (int i=0; i<url.size();i++) {
+            String urlS = "https://ujapi.herokuapp.com"+url.toString().indexOf(i);
+            Picasso.with(this)
+                    .load(urlS)
+                    .into(mImageView, imageLoadedCallback);
+        }
     }
 
     @Override

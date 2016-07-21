@@ -1,5 +1,6 @@
 package com.example.dell.ujstore;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -32,12 +33,11 @@ import java.util.Map;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.apptik.widget.multiselectspinner.MultiSelectSpinner;
 
-
-public class profile_activity extends AppCompatActivity {
+public class ChangePassword extends AppCompatActivity {
     private static final String PUTDETAILS_URL = "https://ujapi.herokuapp.com/api/v1/s/stores";
-    private EditText editTextName;
-    private EditText editTextadd;
-    private EditText editTextdes;
+    private EditText editTextOld;
+    private EditText editTextNew;
+    private EditText editTextCon;
     private Button buttonnext;
     String items;
     private ArrayAdapter<String> adapter2;
@@ -46,76 +46,49 @@ public class profile_activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_profile_activity);
+        setContentView(R.layout.change_password_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        editTextName = (EditText) findViewById(R.id.nameText);
-        editTextadd = (EditText) findViewById(R.id.addText);
-        editTextdes = (EditText) findViewById(R.id.desText);
-        buttonnext = (Button) findViewById(R.id.btnnext);
-        ArrayList<String> options = new ArrayList<>();
-        options.add("Hardware Material Store");
-        options.add("Electrical Material Store");
-        options.add("Paint Material Store");
-        options.add("Building Material Store");
-        options.add("Wood & Timber Material Store");
+        editTextOld = (EditText) findViewById(R.id.oldpassText);
+        editTextNew = (EditText) findViewById(R.id.newpassText);
+        editTextCon = (EditText) findViewById(R.id.conpassText);
+        buttonnext = (Button) findViewById(R.id.btnchange);
 
-
-        MultiSelectSpinner multiSelectSpinner = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner);
-        adapter2 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_multiple_choice, options);
-        multiSelectSpinner.setListAdapter(adapter2)
-
-                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
-                    @Override
-                    public void onItemsSelected(boolean[] selected) {
-                        StringBuilder builder = new StringBuilder();
-
-                        for (int i = 0; i < selected.length; i++) {
-                            if (selected[i]) {
-                                builder.append(adapter2.getItem(i)).append(", ");
-                            }
-                        }
-                        items = builder.toString();
-                    }
-                })
-                .setAllUncheckedText("Store category")
-                .setSelectAll(false);
         buttonnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PutDetails();
+                ChangeDetails();
             }
         });
 
-}
-    private void PutDetails() {
-        final String name = editTextName.getText().toString();
-        final String address = editTextadd.getText().toString();
-        final String description = editTextdes.getText().toString();
-        if (name.isEmpty()) {
-            editTextName.setError("Enter store name");
-        } else if (address.isEmpty()) {
-            editTextadd.setError("Enter your address");
-        } else {
+    }
+    private void ChangeDetails() {
+        final String old = editTextOld.getText().toString();
+        final String newpass = editTextNew.getText().toString();
+        final String connew = editTextCon.getText().toString();
+        if (old.isEmpty()) {
+            editTextOld.setError("Enter old password");
+        } else if (newpass.isEmpty()) {
+            editTextNew.setError("Enter new password");
+        } else if (connew.isEmpty() ) {
+            editTextCon.setError("Confirm new password");
+        } else if (!connew.equals(newpass)) {
+            editTextCon.setError("Password don't match");
+        }
+        else {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     SharedPreferences pref = getBaseContext().getSharedPreferences("MyPref", 0);
-                    String id = pref.getString("id", null);
+                    String id =pref.getString("id", null);
                     final String authtoken = pref.getString("token", null);
                     JSONObject js = new JSONObject();
                     try {
                         JSONObject jsonobject_one = new JSONObject();
-                        JSONObject jsonobject_two = new JSONObject();
 
-
-                        jsonobject_one.put("store_name", name);
-                        jsonobject_one.put("address", address);
-                        jsonobject_two.put("category",items);
-                        jsonobject_one.put("store_category_attributes",jsonobject_two);
-                        jsonobject_one.put("description", description);
+                        jsonobject_one.put("password", newpass);
 
                         js.put("store", jsonobject_one);
 
@@ -129,7 +102,7 @@ public class profile_activity extends AppCompatActivity {
 
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    Intent intent = new Intent(profile_activity.this, SwipeTabActivity.class);
+                                    Intent intent = new Intent(ChangePassword.this, SwipeTabActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
@@ -139,7 +112,7 @@ public class profile_activity extends AppCompatActivity {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(profile_activity.this, "Invalid Entries", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ChangePassword.this, "Invalid Entries", Toast.LENGTH_LONG).show();
                             pDialog.dismiss();
                         }
                     }) {
@@ -153,13 +126,13 @@ public class profile_activity extends AppCompatActivity {
                         }
                     };
 
-                    RequestQueue requestQueue = Volley.newRequestQueue(profile_activity.this);
+                    RequestQueue requestQueue = Volley.newRequestQueue(ChangePassword.this);
                     requestQueue.add(jsonObject);
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pDialog = new SweetAlertDialog(profile_activity.this, SweetAlertDialog.PROGRESS_TYPE);
+                            pDialog = new SweetAlertDialog(ChangePassword.this, SweetAlertDialog.PROGRESS_TYPE);
                             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                             pDialog.setTitleText("Updating");
                             pDialog.setCancelable(false);
@@ -194,3 +167,4 @@ public class profile_activity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+

@@ -9,10 +9,6 @@
             android:icon="@drawable/ic_store_mall_directory_24dp"
             android:title="Store Profile" />
         <item
-            android:id="@+id/store_sharable_profile"
-            android:icon="@drawable/ic_send_24dp"
-            android:title="Store Sharable profile" />
-        <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_logout"
             android:title="Logout" />

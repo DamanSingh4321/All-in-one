@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setContentView(R.layout.login_layout);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
+            SharedPreferences pref2 = getApplicationContext().getSharedPreferences("GSPref", 0); // 0 - for private mode
+            SharedPreferences.Editor editor = pref2.edit();
+            editor.putString("start", "true");
+            editor.apply();
             pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
             pref = getApplicationContext().getSharedPreferences("MyPref", 0);
             if (pref.contains("name")) {
@@ -98,12 +102,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     public void onResponse(JSONObject response) {
                                         try {
                                             String name = response.getString("name");
+                                            String id = response.getString("id");
                                             String authtoken = response.getString("authentication_token");
                                             pref = getBaseContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
                                             SharedPreferences.Editor editor = pref.edit();
                                             editor.putString("name", name);
                                             editor.putString("token", authtoken);
                                             editor.putString("email", email);
+                                            editor.putString("id", id);
                                             editor.commit();
                                             Intent intent = new Intent(MainActivity.this, SwipeTabActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

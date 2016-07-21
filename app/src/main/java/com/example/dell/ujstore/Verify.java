@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,18 +19,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import swarajsaaj.smscodereader.interfaces.OTPListener;
-import swarajsaaj.smscodereader.receivers.OtpReader;
 
-public class Verify extends AppCompatActivity implements OTPListener {
+public class Verify extends AppCompatActivity {
     private static final String VERIFY_URL = "https://ujapi.herokuapp.com/api/v1/s/stores/verify";
     private static final String RESEND_URL = "https://ujapi.herokuapp.com/api/v1/s/stores/resend";
     private EditText edittextotp;
@@ -46,7 +40,6 @@ public class Verify extends AppCompatActivity implements OTPListener {
         edittextotp = (EditText) findViewById(R.id.editTextotp);
         btnverify = (Button) findViewById(R.id.buttonverify);
         btnresend = (TextView) findViewById(R.id.editTextresend);
-        OtpReader.bind(this, "");
         btnverify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,14 +52,6 @@ public class Verify extends AppCompatActivity implements OTPListener {
                 resend();
             }
         });
-    }
-
-
-    @Override
-    public void otpReceived(String smsText) {
-        //Do whatever you want to do with the text
-        Toast.makeText(this, "Got " + smsText, Toast.LENGTH_LONG).show();
-        Log.d("Otp", smsText);
     }
 
     private void verification() {
@@ -97,7 +82,6 @@ public class Verify extends AppCompatActivity implements OTPListener {
 
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                     Toast.makeText(Verify.this,response.toString(),Toast.LENGTH_LONG).show();
                                     try {
                                         String name = response.getString("name");
                                         String authtoken = response.getString("authentication_token");

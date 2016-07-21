@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -127,75 +128,81 @@ public class TwoFragment extends Fragment implements SwipeRefreshLayout.OnRefres
 
 
     public void data() {
-        myDataset.clear();
-        StoreType.clear();
-        imageUrl.clear();
-        addString.clear();
-        lead_id.clear();
-        date.clear();
-        time.clear();
-        ago.clear();
-        swipeRefreshLayout.setRefreshing(true);
-        pref = this.getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        final String authtoken = pref.getString("token", null);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
-                URL,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject object = response.getJSONObject(i);
-                                String booking = object.getString("booking");
-                                JSONObject object2 = new JSONObject(booking);
-                                myDataset.add("Name");
-                               // String storeid = object.getString("store_category");
-                              //  JSONObject storeobject = new JSONObject(storeid);
-                                StoreType.add("Store Type");
-                                String a1 = object2.getString("attachment");
-                                JSONObject a1obj = new JSONObject(a1);
-                                String a2 = a1obj.getString("attachment");
-                                JSONObject a3 = new JSONObject(a2);
-                                imageUrl.add(a3.getString("url"));
-                                addString.add(object2.getString("address"));
-                                lead_id.add(object2.getString("id"));
-                                date.add("Booking date: "+object2.getString("date"));
-                                time.add("Booking time: "+object2.getString("time"));
-                                ago.add(object2.getString("created_at")+" ago");
-                            }
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.putInt("check",response.length());
-                            editor.apply();
-                            adapter.notifyDataSetChanged();
-                            swipeRefreshLayout.setRefreshing(false);
+        try {
+            swipeRefreshLayout.setRefreshing(true);
+            final String authtoken = pref.getString("token", null);
+            final NetworkResponse networkResponse = null;
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                    URL,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            try {
+                                myDataset.clear();
+                                StoreType.clear();
+                                imageUrl.clear();
+                                addString.clear();
+                                lead_id.clear();
+                                date.clear();
+                                time.clear();
+                                ago.clear();
+                                for (int i = 0; i < response.length(); i++) {
+                                    JSONObject object = response.getJSONObject(i);
+                                    String booking = object.getString("booking");
+                                    JSONObject object2 = new JSONObject(booking);
+                                    myDataset.add("Name");
+                                    // String storeid = object.getString("store_category");
+                                    //  JSONObject storeobject = new JSONObject(storeid);
+                                    StoreType.add("Store Type");
+                                    String a1 = object2.getString("attachment");
+                                    JSONObject a1obj = new JSONObject(a1);
+                                    String a2 = a1obj.getString("attachment");
+                                    JSONObject a3 = new JSONObject(a2);
+                                    imageUrl.add(a3.getString("url"));
+                                    addString.add(object2.getString("address"));
+                                    lead_id.add(object2.getString("id"));
+                                    date.add("Booking date: " + object2.getString("date"));
+                                    time.add("Booking time: " + object2.getString("time"));
+                                    ago.add(object2.getString("created_at") + " ago");
+                                }
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putInt("check", response.length());
+                                editor.apply();
+                                adapter.notifyDataSetChanged();
+                                swipeRefreshLayout.setRefreshing(false);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            swipeRefreshLayout.setRefreshing(false);
                         }
-                        swipeRefreshLayout.setRefreshing(false);
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), "No internet Access, Check your internet connection.", Toast.LENGTH_SHORT).show();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error instanceof NoConnectionError) {
-                    Toast.makeText(getContext(), "No internet Access, Check your internet connection.", Toast.LENGTH_SHORT).show();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                headers.put("Authorization", authtoken);
-                return headers;
-            }
-            @Override
-            public Request.Priority getPriority(){
-                return Request.Priority.IMMEDIATE;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(jsonArrayRequest);
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Content-Type", "application/json; charset=utf-8");
+                    headers.put("Authorization", authtoken);
+                    return headers;
+                }
+
+                @Override
+                public Request.Priority getPriority() {
+                    return Request.Priority.IMMEDIATE;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue.add(jsonArrayRequest);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.example.dell.ujstore;
 
 
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.Fragment;

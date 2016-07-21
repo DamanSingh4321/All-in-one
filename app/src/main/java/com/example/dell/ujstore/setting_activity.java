@@ -1,6 +1,7 @@
 package com.example.dell.ujstore;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,7 +13,7 @@ import android.widget.Toast;
 
 public class setting_activity extends AppCompatActivity {
 
-    String[] settingArray = {"Change Password","Share App","About Us","Contact Us"};
+    String[] settingArray = {"Change Password","About Us","Contact Us"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +33,18 @@ public class setting_activity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                int itemPosition = position;
-                String itemValue = (String) listView.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
-                        .show();
+                if(position == 0){
+                    Intent intent = new Intent(setting_activity.this,ChangePassword.class);
+                    startActivity(intent);
+                }
+                if(position == 1){
+                    Intent intent = new Intent(setting_activity.this,About_us.class);
+                    startActivity(intent);
+                }
+                if(position == 2){
+                    Intent intent = new Intent(setting_activity.this,Contact_us.class);
+                    startActivity(intent);
+                }
             }
         });
     }

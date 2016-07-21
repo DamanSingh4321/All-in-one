@@ -160,7 +160,7 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
                     Intent intent = new Intent(mContext, ImageView_Activity.class);
                     String imageurl = "https://ujapi.herokuapp.com" + imageUrl.get(position);
                     System.out.println(imageurl);
-                    intent.putExtra("imageUrl", imageurl);
+                    intent.putStringArrayListExtra("imageUrl", imageUrl);
                     v.getContext().startActivity(intent);
                 }
             });

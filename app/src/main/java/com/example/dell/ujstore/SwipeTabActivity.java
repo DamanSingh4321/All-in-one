@@ -2,11 +2,7 @@ package com.example.dell.ujstore;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,17 +21,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import static android.content.Intent.ACTION_PICK;
+import static android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+import static com.squareup.picasso.Callback.EmptyCallback;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 public class SwipeTabActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private ViewPager mViewPager;
     private static int RESULT_LOAD_IMG = 1;
     SharedPreferences pref;
+    private ImageView imageView;
+    private String image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class SwipeTabActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View hView = navigationView.getHeaderView(0);
-        ImageView imageView = (ImageView) hView.findViewById(R.id.imageViewnav);
+        imageView = (ImageView) hView.findViewById(R.id.imageViewnav);
         TextView tvname = (TextView) hView.findViewById(R.id.headername);
         TextView tvemail = (TextView) hView.findViewById(R.id.headeremail);
         pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
@@ -62,15 +63,12 @@ public class SwipeTabActivity extends AppCompatActivity
         String email = pref.getString("email", null);
         tvemail.setText(email);
         tvname.setText(name);
+        loadImage();
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-// Show only images, no videos or anything else
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-// Always show the chooser (if there are multiple options available)
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), RESULT_LOAD_IMG);
+                Intent gallery = new Intent(ACTION_PICK, EXTERNAL_CONTENT_URI);
+                startActivityForResult(gallery, RESULT_LOAD_IMG);
             }
         });
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -103,37 +101,20 @@ public class SwipeTabActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        try {
             // When an Image is picked
             if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
                     && null != data) {
                 // Get the Image from data
 
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-                // Get the cursor
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                // Move to first row
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
-                ImageView imgView = (ImageView) findViewById(R.id.imageViewnav);
-                // Set the Image in ImageView after decoding the String
-                imgView.setImageBitmap(BitmapFactory
-                        .decodeFile(imgDecodableString));
-
+                image = data.getData().toString();
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("ImagePref", 0); // 0 - for private mode
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("image", image);
+                editor.apply();
+                loadImage();
             } else {
-                Toast.makeText(this, "You haven't picked Image",
-                        Toast.LENGTH_LONG).show();
+                super.onActivityResult(requestCode, resultCode, data);
             }
-        } catch (Exception e) {
-              e.printStackTrace();
-        }
 
     }
 
@@ -164,7 +145,7 @@ public class SwipeTabActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this,Submit.class);
+            Intent intent = new Intent(this,setting_activity.class);
             startActivity(intent);
             return true;
         }
@@ -182,17 +163,17 @@ public class SwipeTabActivity extends AppCompatActivity
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
             SharedPreferences.Editor editor = pref.edit();
             editor.clear();
-            editor.commit();
+            editor.apply();
+            SharedPreferences pref2 = getApplicationContext().getSharedPreferences("ImagePref", 0);
+            SharedPreferences.Editor editor2 = pref2.edit();
+            editor2.clear();
+            editor2.apply();
             Intent intent = new Intent(SwipeTabActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else if (id == R.id.store_profile) {
             Intent intent = new Intent(this,profile_activity.class);
-            startActivity(intent);
-
-        } else if (id == R.id.store_sharable_profile) {
-            Intent intent = new Intent(this,sharable_activity.class);
             startActivity(intent);
 
         } else if (id == R.id.how_it_works) {
@@ -247,5 +228,22 @@ public class SwipeTabActivity extends AppCompatActivity
             return nooftabs;
         }
 
+    }
+
+    private void loadImage() {
+        pref = getApplicationContext().getSharedPreferences("ImagePref", 0); // 0 - for private mode
+        image = pref.getString("image", null);
+        if(image != null) {
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            DisplayImageOptions options = new DisplayImageOptions.Builder()
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .showImageForEmptyUri(R.drawable.gray_button_background)
+                    .showImageOnFail(R.drawable.blue_button_background)
+                    .showImageOnLoading(R.drawable.ic_download).build();
+
+            ImageAware imageAware = new ImageViewAware(imageView, false);
+            imageLoader.displayImage(image, imageAware, options);
+        }
     }
 }
