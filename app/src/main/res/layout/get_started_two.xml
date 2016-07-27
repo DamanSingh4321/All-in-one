@@ -35,19 +35,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Customers are asked for their requirement of material."
+        android:text="Customers are asked for their requirement of material. Leads which reach you are only genuine ones"
         android:id="@+id/textView3"
         android:textColor="#FFFFFF"
         android:gravity="center" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Leads which reach you are only genuine ones."
-        android:id="@+id/textView4"
-        android:textColor="#FFFFFF"
-        android:gravity="center" />
 
     <ImageView
         android:layout_width="match_parent"

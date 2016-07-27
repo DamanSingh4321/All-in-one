@@ -2,6 +2,7 @@ package com.example.dell.ujstore;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,11 +39,13 @@ public class setting_activity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 if(position == 1){
-                    Intent intent = new Intent(setting_activity.this,About_us.class);
+                    Uri uri = Uri.parse("http://www.unclejoy.in/about"); // missing 'http://' will cause crashed
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                 }
                 if(position == 2){
-                    Intent intent = new Intent(setting_activity.this,Contact_us.class);
+                    Uri uri = Uri.parse("http://www.unclejoy.in/contact"); // missing 'http://' will cause crashed
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                 }
             }

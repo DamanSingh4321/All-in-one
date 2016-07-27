@@ -4,6 +4,8 @@
     package="com.example.dell.ujstore">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -26,9 +28,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:label="Login"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SwipeTabActivity"
             android:label="UncleJoy Store Partner"
@@ -37,14 +40,6 @@
             android:name=".SignUp_Activity"
             android:label="SignUp"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".privacy_activity"
-            android:parentActivityName=".SwipeTabActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".term_activity"
-            android:parentActivityName=".SwipeTabActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".setting_activity"
@@ -60,6 +55,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ImageView_Activity"
+            android:parentActivityName=".SwipeTabActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".get_started"
@@ -77,22 +73,10 @@
             android:name=".ChangePassword"
             android:parentActivityName=".SwipeTabActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".About_us"
+        <activity android:name=".GridActivity"
             android:parentActivityName=".SwipeTabActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Contact_us"
-            android:parentActivityName=".SwipeTabActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Terms_Conditions"
-            android:parentActivityName=".SwipeTabActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".PrivacyPolicy"
-            android:parentActivityName=".SwipeTabActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

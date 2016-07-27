@@ -2,6 +2,7 @@ package com.example.dell.ujstore;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -181,11 +182,13 @@ public class SwipeTabActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.privacy_policy) {
-            Intent intent = new Intent(this,privacy_activity.class);
+            Uri uri = Uri.parse("http://www.unclejoy.in/policy"); // missing 'http://' will cause crashed
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
 
         } else if (id == R.id.term_condition) {
-            Intent intent = new Intent(this,term_activity.class);
+            Uri uri = Uri.parse("http://www.unclejoy.in/terms"); // missing 'http://' will cause crashed
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         } else if (id == R.id.settings) {
             Intent intent = new Intent(this,setting_activity.class);

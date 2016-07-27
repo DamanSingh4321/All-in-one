@@ -5,12 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#d9d7d7">
+    android:background="#FCE4EC">
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/pf"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/gs1"
+        android:layout_gravity="center_horizontal"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/colorAccent"
+        android:layout_marginTop="20dp"
+        android:contentDescription="Upload Store Image"/>
 
 
     <LinearLayout

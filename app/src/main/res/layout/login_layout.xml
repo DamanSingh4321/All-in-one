@@ -82,7 +82,7 @@
         <TextView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Not having an account?"
-            android:textSize="12dp"
+            android:textSize="14dp"
             android:textIsSelectable="false"
             android:textColor="#FFFFFF"
             android:layout_marginTop="20dp">
@@ -90,8 +90,8 @@
         <TextView android:text=" SignUp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textSize="14dp"
-            android:textColor="#FFEB3B"
+            android:textSize="16dp"
+            android:textColor="@color/colorAccent"
             android:clickable="true"
             android:id="@+id/editTextSignup"
             android:layout_marginTop="20dp">
@@ -100,10 +100,10 @@
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Forgot your Password?"
-                android:textSize="12dp"
+                android:textSize="14dp"
                 android:id="@+id/forgettext"
                 android:textIsSelectable="false"
-                android:textColor="#FFFFFF"
+                android:textColor="#ff0000"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center_horizontal">
             </TextView>

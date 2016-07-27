@@ -5,21 +5,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,8 +24,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.appyvet.rangebar.RangeBar;
 import com.github.chuross.library.ExpandableLayout;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -50,6 +47,7 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
     private Context mContext;
     SharedPreferences pref;
     ViewPager viewPager;
+    private int VIEW_EMPTY = 1;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -64,25 +62,26 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
         public TextView booking_date;
         public TextView adress;
         private Button apply;
-        private Button reject;
         ExpandableLayout llExpandArea;
 
-        public MyViewHolder(View v) {
+        public MyViewHolder(View v, int viewType) {
             super(v);
-            viewPager = (ViewPager) ((SwipeTabActivity)mContext).findViewById(R.id.container);
-            mCardView = (CardView) v.findViewById(R.id.card_view);
-            mTextView = (TextView) v.findViewById(R.id.tv_text);
-            storeText = (TextView) v.findViewById(R.id.type);
-            viewimage = (TextView) v.findViewById(R.id.viewimage);
-            adress = (TextView) v.findViewById(R.id.address);
-            time_ago = (TextView) v.findViewById(R.id.time_ago);
-            booking_date = (TextView) v.findViewById(R.id.booking_date);
-            booking_time = (TextView) v.findViewById(R.id.booking_time);
-            apply = (Button) v.findViewById(R.id.apply);
-            reject = (Button) v.findViewById(R.id.reject);
-            llExpandArea = (ExpandableLayout) itemView.findViewById(R.id.llExpandArea);
-            mCardView.setOnClickListener(this);
-            reject.setOnClickListener(this);
+            if (viewType == 0) {
+                viewPager = (ViewPager) ((SwipeTabActivity) mContext).findViewById(R.id.container);
+                mCardView = (CardView) v.findViewById(R.id.card_view);
+                mTextView = (TextView) v.findViewById(R.id.tv_text);
+                storeText = (TextView) v.findViewById(R.id.type);
+                viewimage = (TextView) v.findViewById(R.id.viewimage);
+                adress = (TextView) v.findViewById(R.id.address);
+                time_ago = (TextView) v.findViewById(R.id.time_ago);
+                booking_date = (TextView) v.findViewById(R.id.booking_date);
+                booking_time = (TextView) v.findViewById(R.id.booking_time);
+                apply = (Button) v.findViewById(R.id.apply);
+                llExpandArea = (ExpandableLayout) itemView.findViewById(R.id.llExpandArea);
+                mCardView.setOnClickListener(this);
+            } else if (viewType == 1) {
+
+            }
         }
 
         @Override
@@ -95,11 +94,7 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
                     holder.llExpandArea.collapse();
                 }
             }
-            if (view == reject){
-                rejectDialog();
-            }
         }
-
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -120,22 +115,33 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
     // Create new views (invoked by the layout manager)
     @Override
     public OneAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cards_layout, parent, false);
-        MyViewHolder holder = new MyViewHolder(v);
-        parent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyViewHolder holder = (MyViewHolder) v.getTag();
-                if (holder.llExpandArea.isCollapsed()) {
-                    holder.llExpandArea.expand();
-                } else {
-                    holder.llExpandArea.collapse();
+        View v;
+        MyViewHolder holder;
+       switch (viewType){
+           case 0:
+            v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.cards_layout, parent, false);
+            holder = new MyViewHolder(v, viewType);
+               VIEW_EMPTY = 0;
+            parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyViewHolder holder = (MyViewHolder) v.getTag();
+                    if (holder.llExpandArea.isCollapsed()) {
+                        holder.llExpandArea.expand();
+                    } else {
+                        holder.llExpandArea.collapse();
+                    }
                 }
-            }
-        });
-        holder.mCardView.setTag(holder);
-        return holder;
+            });
+            holder.mCardView.setTag(holder);
+            return holder;
+           default:
+               v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.leadempty, parent, false);
+               holder = new MyViewHolder(v, viewType);
+            return holder;
+        }
     }
 
     @Override
@@ -150,17 +156,18 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
             setScaleAnimation(holder.itemView);
             final String id = lead_id.get(position);
             String s = imageUrl.get(position);
-            if (s == "null") {
+            if (s.equals("[]")) {
                 holder.viewimage.setVisibility(View.GONE);
             } else
                 holder.viewimage.setVisibility(View.VISIBLE);
             holder.viewimage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ImageView_Activity.class);
-                    String imageurl = "https://ujapi.herokuapp.com" + imageUrl.get(position);
+                    Intent intent = new Intent(mContext, GridActivity.class);
+                    String imageurl = imageUrl.get(position);
                     System.out.println(imageurl);
-                    intent.putStringArrayListExtra("imageUrl", imageUrl);
+                    intent.putExtra("imageUrl", imageurl);
+                    intent.putExtra("id",id);
                     v.getContext().startActivity(intent);
                 }
             });
@@ -168,9 +175,7 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (holder.viewimage.getVisibility() == View.VISIBLE) {
-                        Intent intent = new Intent(mContext, Submit.class);
-                        intent.putExtra(id, "id");
-                        v.getContext().startActivity(intent);
+                       submitList(id);
                     } else {
                         submiit(id);
                     }
@@ -184,14 +189,27 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
 
     @Override
     public void onViewRecycled(MyViewHolder holder) {
-        holder.llExpandArea.collapse();
+        if(VIEW_EMPTY == 0) {
+            holder.llExpandArea.collapse();
+        }
     }
 
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        if(mDataset.size() == 0){
+            return 1;
+        }else {
+            return mDataset.size();
+        }
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        int viewType = 0; //Default is 1
+        if (mDataset.size() == 0) viewType = 1; //if zero, it will be a header view
+        return viewType;
+        }
 
     private void setScaleAnimation(View view) {
         ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -199,31 +217,6 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
         view.startAnimation(anim);
     }
 
-    private void rejectDialog(){
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View subView = inflater.inflate(R.layout.dialog_reject, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("AlertDialog");
-        builder.setMessage("AlertDialog Message");
-        builder.setView(subView);
-        AlertDialog alertDialog = builder.create();
-
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(mContext, "Yes",Toast.LENGTH_LONG).show();
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(mContext, "No", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        builder.show();
-    }
     private void submiit(String id) {
         String Submit_Url = "https://ujapi.herokuapp.com/api/v1/s/bookings/" + id + "/respond_bookings";
         pref = this.mContext.getSharedPreferences("MyPref", 0); // 0 - for private mode
@@ -262,5 +255,63 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.MyViewHolder> {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this.mContext);
         requestQueue.add(jsonObject);
+    }
+
+    public void submitList(final String id) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View subView = inflater.inflate(R.layout.dialog_accept, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Discount & Offer");
+        builder.setMessage("Enter discount");
+        final String Submit_Url = "https://ujapi.herokuapp.com/api/v1/s/bookings/" + id + "/respond_bookings";
+        pref = this.mContext.getSharedPreferences("MyPref", 0); // 0 - for private mode
+        final String authtoken = pref.getString("token", null);
+        final EditText discount = (EditText) subView.findViewById(R.id.editTextmindis);
+        builder.setView(subView);
+        AlertDialog alertDialog = builder.create();
+
+        builder.setPositiveButton("RESPOND", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String dis_amount = discount.getText().toString();
+                JSONObject jsonBody = new JSONObject();
+                try {
+                    jsonBody.put("discount", dis_amount);
+                    jsonBody.put("booking_id", id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST,
+                        Submit_Url, jsonBody,
+                        new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                viewPager.setCurrentItem(1);
+                            }
+                        }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }) {
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put("Authorization", authtoken);
+                        return headers;
+                    }
+                };
+
+                RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+                requestQueue.add(jsonObject);
+            }
+        });
+
+
+        builder.show();
     }
 }

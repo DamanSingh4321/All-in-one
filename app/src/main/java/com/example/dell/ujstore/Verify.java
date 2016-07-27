@@ -54,6 +54,11 @@ public class Verify extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this,"Enter OTP",Toast.LENGTH_LONG).show();
+    }
+
     private void verification() {
         final String otp = edittextotp.getText().toString();
         final String idget = getIntent().getExtras().getString("id");
