@@ -38,6 +38,7 @@ public class SwipeTabActivity extends AppCompatActivity
     SharedPreferences pref;
     private ImageView imageView;
     private String image;
+    private String storeid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class SwipeTabActivity extends AppCompatActivity
         String name = pref.getString("name", null);
         pref.getString("token", null);
         String email = pref.getString("email", null);
+        storeid = pref.getString("id", null);
         tvemail.setText(email);
         tvname.setText(name);
         loadImage();
@@ -174,7 +176,8 @@ public class SwipeTabActivity extends AppCompatActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else if (id == R.id.store_profile) {
-            Intent intent = new Intent(this,profile_activity.class);
+            Intent intent = new Intent(this,profileauto.class);
+            intent.putExtra("id",storeid);
             startActivity(intent);
 
         } else if (id == R.id.how_it_works) {

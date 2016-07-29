@@ -158,11 +158,10 @@ public class ThreeAdapter extends RecyclerView.Adapter<ThreeAdapter.MyViewHolder
         holder.viewimage3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, GridActivity.class);
+                Intent intent = new Intent(mContext, Gridnobtn.class);
                 String imageurl = imageUrl.get(position);
                 System.out.println(imageurl);
                 intent.putExtra("imageUrl", imageurl);
-                intent.putExtra("id", "null");
                 v.getContext().startActivity(intent);
             }
         });

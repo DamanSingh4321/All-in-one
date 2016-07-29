@@ -61,10 +61,13 @@
             android:name=".get_started"
             android:label="@string/title_activity_get_started" />
         <activity
-            android:name=".Submit"
+            android:name=".profileauto"
             android:parentActivityName=".SwipeTabActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ForgetPassword" />
+        <activity
+            android:name=".ForgetPassword"
+            android:parentActivityName=".SwipeTabActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Verify"
             android:parentActivityName=".SwipeTabActivity"
@@ -73,10 +76,12 @@
             android:name=".ChangePassword"
             android:parentActivityName=".SwipeTabActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".GridActivity"
+        <activity
+            android:name=".GridActivity"
             android:parentActivityName=".SwipeTabActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".Gridnobtn" />
+        <activity android:name=".Imagenobtn"></activity>
     </application>
 
 </manifest>

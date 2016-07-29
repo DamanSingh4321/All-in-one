@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -21,13 +22,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,7 +71,7 @@ public class profile_activity extends AppCompatActivity {
         editTextadd = (EditText) findViewById(R.id.addText);
         editTextdes = (EditText) findViewById(R.id.desText);
         buttonnext = (Button) findViewById(R.id.btnnext);
-        circle = (ImageView)findViewById(R.id.pf);
+        circle = (ImageView) findViewById(R.id.pf);
         circle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +92,7 @@ public class profile_activity extends AppCompatActivity {
 
 
         MultiSelectSpinner multiSelectSpinner = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner);
-        adapter2 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_multiple_choice, options);
+        adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, options);
         multiSelectSpinner.setListAdapter(adapter2)
 
                 .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
@@ -112,6 +117,7 @@ public class profile_activity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -136,7 +142,8 @@ public class profile_activity extends AppCompatActivity {
             }
         }
     }
-    public String converttobase64(Bitmap bmp){
+
+    public String converttobase64(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 70, baos);
         byte[] imageBytes = baos.toByteArray();
@@ -158,7 +165,7 @@ public class profile_activity extends AppCompatActivity {
                 public void run() {
                     SharedPreferences pref = getBaseContext().getSharedPreferences("MyPref", 0);
                     String id = pref.getString("id", null);
-                    SharedPreferences sharing= getBaseContext().getSharedPreferences("UPDATE",0);
+                    SharedPreferences sharing = getBaseContext().getSharedPreferences("UPDATE", 0);
                     final String authtoken = pref.getString("token", null);
                     JSONObject js = new JSONObject();
                     try {
@@ -168,9 +175,9 @@ public class profile_activity extends AppCompatActivity {
 
                         jsonobject_one.put("store_name", name);
                         jsonobject_one.put("address", address);
-                        jsonobject_one.put("picture","data:image/jpeg;base64,"+sharing.getString("pic",""));
-                        jsonobject_two.put("category",items);
-                        jsonobject_one.put("store_category_attributes",jsonobject_two);
+                        jsonobject_one.put("picture", "data:image/jpeg;base64," + sharing.getString("pic", ""));
+                        jsonobject_two.put("category", items);
+                        jsonobject_one.put("store_category_attributes", jsonobject_two);
                         jsonobject_one.put("description", description);
 
                         js.put("store", jsonobject_one);
@@ -180,7 +187,7 @@ public class profile_activity extends AppCompatActivity {
                     }
 
                     JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.PUT,
-                            PUTDETAILS_URL+"/"+id, js,
+                            PUTDETAILS_URL + "/" + id, js,
                             new Response.Listener<JSONObject>() {
 
                                 @Override
@@ -195,7 +202,7 @@ public class profile_activity extends AppCompatActivity {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(profile_activity.this, "Invalid Entries", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(profile_activity.this, "Invalid Entries", Toast.LENGTH_LONG).show();
                             pDialog.dismiss();
                         }
                     }) {
@@ -226,27 +233,5 @@ public class profile_activity extends AppCompatActivity {
             }).start();
 
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

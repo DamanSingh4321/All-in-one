@@ -5,18 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GridActivity extends AppCompatActivity {
+public class Gridnobtn extends AppCompatActivity {
     String regex = "\\[|\\]";
     ArrayList<String> imageshow = new ArrayList<String>();
 
@@ -24,7 +21,7 @@ public class GridActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         GridView grid;
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.grid_laayout);
+        setContentView(R.layout.gridnobtn);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -41,14 +38,14 @@ public class GridActivity extends AppCompatActivity {
             System.out.println("IMaage:"+imageshow);
         }
         Grid_Single adapter = new Grid_Single(this, imageshow);
-        grid=(GridView)findViewById(R.id.grid);
+        grid=(GridView)findViewById(R.id.grid2);
         grid.setAdapter(adapter);
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent intent = new Intent(GridActivity.this,ImageView_Activity.class);
+                Intent intent = new Intent(Gridnobtn.this,Imagenobtn.class);
                 intent.putExtra("IMAGE",imageshow.get(position));
                 startActivity(intent);
 
@@ -56,3 +53,4 @@ public class GridActivity extends AppCompatActivity {
         });
     }
 }
+

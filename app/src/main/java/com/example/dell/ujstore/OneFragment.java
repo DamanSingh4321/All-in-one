@@ -125,7 +125,7 @@ public class OneFragment extends Fragment{
                         data(getContext());
                         swipeRefreshLayout.setRefreshing(false);
                     }
-                }, 3000);
+                }, 5000);
             }
         });
 
@@ -135,9 +135,9 @@ public class OneFragment extends Fragment{
             @Override
             public void run() {
                 checkdata(getContext());
-                handler.postDelayed(this, 30 * 1000);
+                handler.postDelayed(this, 10 * 1000);
             }
-        }, 30 * 1000);
+        }, 10 * 1000);
         return rootView;
     }
 

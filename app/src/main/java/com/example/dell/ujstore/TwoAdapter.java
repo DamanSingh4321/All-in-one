@@ -79,15 +79,15 @@ public class TwoAdapter extends RecyclerView.Adapter<TwoAdapter.MyViewHolder> {
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public TwoAdapter(Context context, ArrayList<String> myDataset, ArrayList<String> StoreType,
-                      ArrayList<String> imageUrl, ArrayList<String> addString,
-                      ArrayList<String> date, ArrayList<String> time, ArrayList<String> ago) {
+                      ArrayList<String> addString, ArrayList<String> date,
+                      ArrayList<String> time, ArrayList<String> ago, ArrayList<String> imageUrl) {
         this.mDataset = myDataset;
         this.StoreType = StoreType;
-        this.imageUrl = imageUrl;
         this.addString = addString;
         this.date = date;
         this.time = time;
         this.ago = ago;
+        this.imageUrl = imageUrl;
         this.mContext = context;
     }
 
@@ -129,11 +129,10 @@ public class TwoAdapter extends RecyclerView.Adapter<TwoAdapter.MyViewHolder> {
             holder.viewimage2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, GridActivity.class);
+                    Intent intent = new Intent(mContext, Gridnobtn.class);
                     String imageurl = imageUrl.get(position);
                     System.out.println(imageurl);
                     intent.putExtra("imageUrl", imageurl);
-                    intent.putExtra("id", "null");
                     v.getContext().startActivity(intent);
                 }
             });

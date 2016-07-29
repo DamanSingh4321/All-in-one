@@ -11,9 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/pf"
+        android:id="@+id/pfauto"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:src="@drawable/ic_icon"
@@ -23,58 +22,62 @@
         android:layout_marginTop="20dp"
         android:contentDescription="Upload Store Image"/>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="30dp"
+        android:padding="20dp"
         android:background="#FCE4EC">
 
-        <com.rengwuxian.materialedittext.MaterialEditText
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/nameText"
-            android:hint="Store Name"
-            android:inputType="textPersonName"
+            android:id="@+id/nameTextauto"
+            android:text="name"
+            android:textSize="18dp"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addTextauto"
             android:singleLine="true"
-            app:met_floatingLabel="highlight" />
+            android:text="add"
+            android:textSize="18dp"
+            android:layout_margin="10dp" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
+       <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/addText"
-            android:hint="Store Address"
-            android:inputType="textPostalAddress"
-            android:singleLine="true"
-            app:met_floatingLabel="highlight" />
+            android:id="@+id/catTextauto"
+           android:text="category"
+           android:textSize="18dp"
+           android:layout_margin="10dp" />
 
-        <io.apptik.widget.multiselectspinner.MultiSelectSpinner
-            android:id="@+id/multiselectSpinner"
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme"
-            android:layout_marginTop="20dp" />
-
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/desText"
-            android:hint="Store Description"
-            android:inputType="textMultiLine"
-            app:met_floatingLabel="highlight"
-            app:met_maxCharacters="150"/>
+            android:id="@+id/desTextauto"
+            android:text="description"
+            android:textSize="18dp"
+            android:layout_margin="10dp" />
 
         <com.rey.material.widget.Button
-            android:text="UPDATE"
+            android:text="EDIT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:id="@+id/btnnext"
+            android:id="@+id/btnnextauto"
             android:layout_gravity="center_horizontal"
             android:background="@color/colorAccent"
             android:textColor="#FFFFFF"
             android:fontFamily="sans-serif"
             android:textStyle="bold" />
     </LinearLayout>
+    </ScrollView>
 </LinearLayout>

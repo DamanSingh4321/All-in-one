@@ -118,9 +118,9 @@ public class ThreeFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             @Override
             public void run() {
                 checkdata(getContext());
-                handler.postDelayed(this, 60 * 1000);
+                handler.postDelayed(this, 10 * 1000);
             }
-        }, 60 * 1000);
+        }, 10 * 1000);
         return rootView;
     }
 
@@ -173,7 +173,7 @@ public class ThreeFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                                     System.out.println(imageUrl.toString());
                                     addString.add(object.getString("address"));
                                     lead_id.add(object.getString("id"));
-                                    String mob = object.getString("store");
+                                    String mob = object.getString("user");
                                     JSONObject mobobj = new JSONObject(mob);
                                     mobile.add(mobobj.getString("mobile"));
                                     date.add("Booking date: " + object.getString("date"));

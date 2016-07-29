@@ -54,7 +54,7 @@ public class TwoFragment extends Fragment{
     CoordinatorLayout coordinatorLayout;
     private String URL = "https://ujapi.herokuapp.com/api/v1/s/respond_bookings";
     SharedPreferences pref;
-    private String Etag;
+    private String Etag = "null" ;
     private  RequestQueue requestQueue;
 
     public TwoFragment() {
@@ -87,7 +87,7 @@ public class TwoFragment extends Fragment{
         rv.setHasFixedSize(true);
         swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout2);
         System.out.println("Mei");
-        adapter = new TwoAdapter(getContext(), myDataset, StoreType, imageUrl, addString, date, time, ago);
+        adapter = new TwoAdapter(getContext(), myDataset, StoreType, addString, date, time, ago, imageUrl);
         rv.setAdapter(adapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
@@ -116,9 +116,9 @@ public class TwoFragment extends Fragment{
             @Override
             public void run() {
                 checkdata(getContext());
-                handler.postDelayed(this, 60 * 1000);
+                handler.postDelayed(this, 10 * 1000);
             }
-        }, 60 * 1000);
+        }, 10 * 1000);
         return rootView;
     }
 
@@ -150,27 +150,24 @@ public class TwoFragment extends Fragment{
                                     String storeid = object.getString("store_category");
                                     JSONObject storeobject = new JSONObject(storeid);
                                     StoreType.add(storeobject.getString("category"));
+                                    addString.add(object2.getString("address"));
+                                    lead_id.add(object2.getString("id"));
+                                    date.add("Booking date: " + object2.getString("date"));
+                                    time.add("Booking time: " + object2.getString("time"));
+                                    ago.add(object2.getString("created_at") + " ago");
                                     String a1 = object.getString("attach_list");
                                     JSONArray a1obj = new JSONArray(a1);
                                     for (int j = 0; j < a1obj.length(); j++) {
                                         JSONObject a2obj = a1obj.getJSONObject(j);
                                         String a2 = a2obj.getString("attachment");
                                         JSONObject a3 = new JSONObject(a2);
-                                        String a4 = a3.getString("attachment");
-                                        JSONObject a4obj = new JSONObject(a4);
-                                        images.add(a4obj.getString("url"));
+                                        images.add(a3.getString("url"));
                                         System.out.println("images:" + images.toString());
                                     }
                                     imageUrl.add(images.toString());
-                                    addString.add(object2.getString("address"));
-                                    lead_id.add(object2.getString("id"));
-                                    date.add("Booking date: " + object2.getString("date"));
-                                    time.add("Booking time: " + object2.getString("time"));
-                                    ago.add(object2.getString("created_at") + " ago");
                                 }
                                 adapter.notifyDataSetChanged();
                                 swipeRefreshLayout.setRefreshing(false);
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

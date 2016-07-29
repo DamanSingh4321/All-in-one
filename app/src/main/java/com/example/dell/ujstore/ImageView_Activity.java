@@ -165,8 +165,8 @@ public class ImageView_Activity extends AppCompatActivity {
 
     Intent share = new Intent(Intent.ACTION_SEND);
     share.setType("image/*");
-    share.putExtra(Intent.EXTRA_SUBJECT, "Great photo from Poland!");
-    share.putExtra(Intent.EXTRA_TEXT, "Hi,  I'm sharing with you this great picture!");
+    share.putExtra(Intent.EXTRA_SUBJECT, "Lead pic!");
+    share.putExtra(Intent.EXTRA_TEXT, "Unclejoy lead image");
     share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile( new File( this.getFileStreamPath( fileName).getAbsolutePath())));
     startActivity(Intent.createChooser(share,"Share via"));
             return true;
@@ -232,4 +232,5 @@ public class ImageView_Activity extends AppCompatActivity {
 
         builder.show();
     }
+
 }
