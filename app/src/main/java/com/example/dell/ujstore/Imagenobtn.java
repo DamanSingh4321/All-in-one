@@ -8,9 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -99,7 +102,7 @@ public class Imagenobtn extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.download) {
-            String url = getIntent().getExtras().getString("imageUrl");
+            String url = getIntent().getExtras().getString("IMAGE");
             File direct = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                     + "/UjImages");
 
@@ -118,36 +121,26 @@ public class Imagenobtn extends AppCompatActivity {
                             | DownloadManager.Request.NETWORK_MOBILE)
                     .setAllowedOverRoaming(false).setTitle("Demo")
                     .setDescription("Something useful. No, really.")
-                    .setDestinationInExternalPublicDir("/UjImages", "fileName.jpg");
+                    .setDestinationInExternalPublicDir("/UjImages", "image.jpg");
 
             mgr.enqueue(request);
             return true;
         }
 
         if(id == R.id.share){
-            ImageView iv = (ImageView )findViewById(R.id.imageView);
-            iv.getDrawable();
-            String fileName = "image.jpg";
-            iv.setDrawingCacheEnabled(true);
-            Bitmap bitmap = iv.getDrawingCache();
-            try
-            {
-                FileOutputStream ostream = this.openFileOutput( fileName, Context.MODE_WORLD_READABLE);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-                ostream.close();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            ImageView ivImage = (ImageView) findViewById(R.id.imageViewno);
+            Drawable mDrawable = ivImage.getDrawable();
+            Bitmap mBitmap = ((BitmapDrawable)mDrawable).getBitmap();
 
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("image/*");
-            share.putExtra(Intent.EXTRA_SUBJECT, "Lead pic!");
-            share.putExtra(Intent.EXTRA_TEXT, "Unclejoy lead image");
-            share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile( new File( this.getFileStreamPath( fileName).getAbsolutePath())));
-            startActivity(Intent.createChooser(share,"Share via"));
-            return true;
+            String path = MediaStore.Images.Media.insertImage(getContentResolver(),
+                    mBitmap, "Image Description", null);
+
+            Uri uri = Uri.parse(path);// see previous remote images section
+            // Construct share intent as described above based on bitmap
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.setType("image/*");
+            startActivity(Intent.createChooser(shareIntent,"Share via"));
         }
 
         return super.onOptionsItemSelected(item);

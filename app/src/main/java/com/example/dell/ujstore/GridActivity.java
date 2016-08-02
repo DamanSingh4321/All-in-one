@@ -31,6 +31,7 @@ public class GridActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         String url = getIntent().getExtras().getString("imageUrl");
         System.out.print(url);
+        final String leadid = getIntent().getExtras().getString("id");
         List<String> imagelist = Arrays.asList(url.split(","));
         System.out.println(imagelist);
         for (int i=0; i<imagelist.size();i++) {
@@ -50,6 +51,7 @@ public class GridActivity extends AppCompatActivity {
                                     int position, long id) {
                 Intent intent = new Intent(GridActivity.this,ImageView_Activity.class);
                 intent.putExtra("IMAGE",imageshow.get(position));
+                intent.putExtra("leadid",leadid);
                 startActivity(intent);
 
             }

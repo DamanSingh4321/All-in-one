@@ -3,6 +3,7 @@ package com.example.dell.ujstore;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,11 +11,13 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -73,8 +76,8 @@ public class ImageView_Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         String url = getIntent().getExtras().getString("IMAGE");
-        final String id = getIntent().getExtras().getString("id");
-        viewPager = (ViewPager) findViewById(R.id.container);
+        final String id = getIntent().getExtras().getString("leadid");
+        viewPager = (ViewPager) this.findViewById(R.id.container);
         mImageView = (ImageView) findViewById(R.id.imageView);
         btn = (Button) findViewById(R.id.applyimage);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +124,7 @@ public class ImageView_Activity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.download) {
-            String url = getIntent().getExtras().getString("imageUrl");
+            String url = getIntent().getExtras().getString("IMAGE");
             File direct = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                     + "/UjImages");
 
@@ -140,36 +143,26 @@ public class ImageView_Activity extends AppCompatActivity {
                             | DownloadManager.Request.NETWORK_MOBILE)
                     .setAllowedOverRoaming(false).setTitle("Demo")
                     .setDescription("Something useful. No, really.")
-                    .setDestinationInExternalPublicDir("/UjImages", "fileName.jpg");
+                    .setDestinationInExternalPublicDir("/UjImages", "image.jpg");
 
             mgr.enqueue(request);
         return true;
         }
 
-        if(id == R.id.share){
-           ImageView iv = (ImageView )findViewById(R.id.imageView);
-            iv.getDrawable();
-            String fileName = "image.jpg";
-    iv.setDrawingCacheEnabled(true);
-    Bitmap bitmap = iv.getDrawingCache();
-    try
-    {
-        FileOutputStream ostream = this.openFileOutput( fileName, Context.MODE_WORLD_READABLE);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-        ostream.close();
-    }
-    catch (Exception e)
-    {
-        e.printStackTrace();
-    }
+        if(id == R.id.share) {
+            ImageView ivImage = (ImageView) findViewById(R.id.imageView);
+            Drawable mDrawable = ivImage.getDrawable();
+            Bitmap mBitmap = ((BitmapDrawable)mDrawable).getBitmap();
 
-    Intent share = new Intent(Intent.ACTION_SEND);
-    share.setType("image/*");
-    share.putExtra(Intent.EXTRA_SUBJECT, "Lead pic!");
-    share.putExtra(Intent.EXTRA_TEXT, "Unclejoy lead image");
-    share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile( new File( this.getFileStreamPath( fileName).getAbsolutePath())));
-    startActivity(Intent.createChooser(share,"Share via"));
-            return true;
+            String path = MediaStore.Images.Media.insertImage(getContentResolver(),
+                    mBitmap, "Image Description", null);
+
+            Uri uri = Uri.parse(path);// see previous remote images section
+            // Construct share intent as described above based on bitmap
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.setType("image/*");
+            startActivity(Intent.createChooser(shareIntent,"Share via"));
         }
 
         return super.onOptionsItemSelected(item);
@@ -205,7 +198,11 @@ public class ImageView_Activity extends AppCompatActivity {
 
                             @Override
                             public void onResponse(JSONObject response) {
-                                viewPager.setCurrentItem(1);
+                                Toast.makeText(ImageView_Activity.this,"Successfully responded",Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(ImageView_Activity.this, SwipeTabActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
                             }
                         }, new Response.ErrorListener() {
 
